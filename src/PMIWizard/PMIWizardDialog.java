@@ -39,9 +39,6 @@ import java.rmi.RemoteException;
 
 import nxopen.*;
 import nxopen.blockstyler.*;
-import nxopen.blockstyler.Node.ExpandOption;
-import nxopen.blockstyler.Tree.ColumnDisplay;
-import nxopen.blockstyler.Tree.NodeInsertOption;
 
 //------------------------------------------------------------------------------
 //Represents Block Styler application class
@@ -91,13 +88,13 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
     private nxopen.blockstyler.Group wizardStepObjects;// Block type: Group
     private nxopen.blockstyler.TabControl tabControl;// Block type: Tabs Page
     private nxopen.blockstyler.Group tabPage1;// Block type: Group
-    private nxopen.blockstyler.Tree masterAnnotations;// Block type: Tree Control
+    private nxopen.blockstyler.Tree masterAnnotationsTree;// Block type: Tree Control
     private nxopen.blockstyler.Group tabPage2;// Block type: Group
-    private nxopen.blockstyler.Tree masterDimensions;// Block type: Tree Control
+    private nxopen.blockstyler.Tree masterDimensionsTree;// Block type: Tree Control
     private nxopen.blockstyler.Group tabPage;// Block type: Group
-    private nxopen.blockstyler.Tree masterFaceFinishes;// Block type: Tree Control
+    private nxopen.blockstyler.Tree masterFaceFinishesTree;// Block type: Tree Control
     
-    private PMITranslationWizard translationWizard; 
+    private PMITranslationWizard pmiTranslationWizard; 
         
     //------------------------------------------------------------------------------
     //Constructor for NX Styler class
@@ -117,7 +114,7 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
             theDialog.addInitializeHandler(this);
             theDialog.addDialogShownHandler(this);
             
-            setTranslationWizard(new PMITranslationWizard(this));
+            setPMITranslationWizard(new PMITranslationWizard(this));
         }
         catch(Exception ex)
         {
@@ -251,20 +248,25 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
         try
         {
             wizard = (nxopen.blockstyler.Wizard)theDialog.topBlock().findBlock("wizard");
-            wizardStepSelectPart = (nxopen.blockstyler.Group)theDialog.topBlock().findBlock("wizardStep1");
+            
+            wizardStepSelectPart = (nxopen.blockstyler.Group)theDialog.topBlock().findBlock("wizardStepSelectPart");
+            wizardStepSelectPMIObjects = (nxopen.blockstyler.Group)theDialog.topBlock().findBlock("wizardStepSelectPMIObjects");
+            wizardStepObjects = (nxopen.blockstyler.Group)theDialog.topBlock().findBlock("wizardStepObjects");
+            
             nativeFileBrowser0 = (nxopen.blockstyler.FileSelection)theDialog.topBlock().findBlock("nativeFileBrowser0");
-            wizardStepSelectPMIObjects = (nxopen.blockstyler.Group)theDialog.topBlock().findBlock("wizardStep2");
+            
             toggleAnnotations = (nxopen.blockstyler.Toggle)theDialog.topBlock().findBlock("toggleAnnotations");
             toggleDimensions = (nxopen.blockstyler.Toggle)theDialog.topBlock().findBlock("toggleDimensions");
             toggleFaceFinishes = (nxopen.blockstyler.Toggle)theDialog.topBlock().findBlock("toggleFaceFinishes");
-            wizardStepObjects = (nxopen.blockstyler.Group)theDialog.topBlock().findBlock("wizardStep");
+            
             tabControl = (nxopen.blockstyler.TabControl)theDialog.topBlock().findBlock("tabControl");
             tabPage1 = (nxopen.blockstyler.Group)theDialog.topBlock().findBlock("tabPage1");
-            masterAnnotations = (nxopen.blockstyler.Tree)theDialog.topBlock().findBlock("masterAnnotations");
             tabPage2 = (nxopen.blockstyler.Group)theDialog.topBlock().findBlock("tabPage2");
-            masterDimensions = (nxopen.blockstyler.Tree)theDialog.topBlock().findBlock("masterDimensions");
             tabPage = (nxopen.blockstyler.Group)theDialog.topBlock().findBlock("tabPage");
-            masterFaceFinishes = (nxopen.blockstyler.Tree)theDialog.topBlock().findBlock("masterFaceFinishes");
+            
+            masterAnnotationsTree = (nxopen.blockstyler.Tree)theDialog.topBlock().findBlock("masterAnnotationsTree");            
+            masterDimensionsTree = (nxopen.blockstyler.Tree)theDialog.topBlock().findBlock("masterDimensionsTree");            
+            masterFaceFinishesTree = (nxopen.blockstyler.Tree)theDialog.topBlock().findBlock("masterFaceFinishesTree");
             //------------------------------------------------------------------------------
             //Registration of Treelist specific callbacks
             //------------------------------------------------------------------------------
@@ -278,7 +280,9 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
             
             //masterAnnotations.setOnPreSelectHandler(this);
             
-            masterAnnotations.setOnSelectHandler(this);
+            /*masterAnnotationsTree.setOnSelectHandler(this);
+            masterDimensionsTree.setOnSelectHandler(this);
+            masterFaceFinishesTree.setOnSelectHandler(this);*/
             
             //masterAnnotations.setOnStateChangeHandler(this);
             
@@ -343,45 +347,8 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
     {
         try
         {
-        	//TODO this throws error when opening steps without tree
-        	theUFSession.ui().openListingWindow();
-        	theUFSession.ui().writeListingWindow("currentStep is " + wizard.currentStep() + "\n");
-        	switch (wizard.currentStep())
-			{
-			case 0:
-				
-				break;
-				
-			case 1:		
-				
-				break;
-				
-			case 2:
-				masterAnnotations.insertColumn(1, "Имя объекта", 500);
-	        	//masterAnnotations.insertColumn(2, "Пометка", 100);
-	        	//masterAnnotations.setColumnDisplayType(1, ColumnDisplay.ICON);
-	        	Node rootNode = masterAnnotations.createNode("root node");
-	        	masterAnnotations.insertNode(rootNode, null, null, NodeInsertOption.FIRST);
-	        	rootNode.expand(ExpandOption.TOGGLE);
-	        	
-	        	Node newNode;
-	        	for (int i = 0; i < 5; i++)
-				{
-	        		newNode = masterAnnotations.createNode("node text " + i);
-	        		
-	            	masterAnnotations.insertNode(newNode, rootNode, null, NodeInsertOption.LAST);
-	            	//newNode.expand(ExpandOption.TOGGLE);
-				}     
-	        	//masterAnnotations.setShowExpandCollapseMarker(false);
-	        	masterAnnotations.setShowToolTips(true);
-	        	masterAnnotations.setShowHeader(true);
-	        	masterAnnotations.setShowMultipleColumns(true);
-				break;
-				
-			default:
-				break;
-			}
-        	
+        	PMITranslationWizard pmiTW = getPMITranslationWizard();
+        	pmiTW.activate();
         }
         catch(Exception ex)
         {
@@ -484,13 +451,13 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
     //{
     //}
     
-    public void onSelectCallback(Tree tree, Node node, int columnID, boolean selected)throws NXException, RemoteException
+    public void onSelectCallback(Tree tree, Node node, int columnID, boolean selected) throws NXException, RemoteException
     {
-    	if (selected) 
+    	if (selected)
     	{
-	    	theUFSession.ui().openListingWindow();
-	    	theUFSession.ui().writeListingWindow(tree.toString() + "/" + node.toString() + "/" + columnID + "/" + selected + "\n\n");
-    	}
+    		theUFSession.ui().openListingWindow();
+    		theUFSession.ui().writeListingWindow(tree.name() + "/" + node.toString() + "/" + columnID + "/" + selected + "\n\n");
+    	}	    
     }
     
     //public void onStateChangeCallback(Tree tree, Node node, int columnID)throws NXException, RemoteException
@@ -603,13 +570,177 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
     //------------------------------------------------------------------------------
     //Getters and Setters
     //------------------------------------------------------------------------------    
-	public PMITranslationWizard getTranslationWizard()
+    
+	public PMITranslationWizard getPMITranslationWizard()
 	{
-		return translationWizard;
+		return pmiTranslationWizard;
 	}
-	public void setTranslationWizard(PMITranslationWizard translationWizard)
+	public void setPMITranslationWizard(PMITranslationWizard translationWizard)
 	{
-		this.translationWizard = translationWizard;
+		this.pmiTranslationWizard = translationWizard;
+	}
+	public static Session getTheSession()
+	{
+		return theSession;
+	}
+	public static void setTheSession(Session theSession)
+	{
+		PMIWizardDialog.theSession = theSession;
+	}
+	public static UFSession getTheUFSession()
+	{
+		return theUFSession;
+	}
+	public static void setTheUFSession(UFSession theUFSession)
+	{
+		PMIWizardDialog.theUFSession = theUFSession;
+	}
+	public static UI getTheUI()
+	{
+		return theUI;
+	}
+	public static void setTheUI(UI theUI)
+	{
+		PMIWizardDialog.theUI = theUI;
+	}
+	public String getTheDlxFileName()
+	{
+		return theDlxFileName;
+	}
+	public void setTheDlxFileName(String theDlxFileName)
+	{
+		this.theDlxFileName = theDlxFileName;
+	}
+	public nxopen.blockstyler.BlockDialog getTheDialog()
+	{
+		return theDialog;
+	}
+	public void setTheDialog(nxopen.blockstyler.BlockDialog theDialog)
+	{
+		this.theDialog = theDialog;
+	}
+	public nxopen.blockstyler.Wizard getWizard()
+	{
+		return wizard;
+	}
+	public void setWizard(nxopen.blockstyler.Wizard wizard)
+	{
+		this.wizard = wizard;
+	}
+	public nxopen.blockstyler.Group getWizardStepSelectPart()
+	{
+		return wizardStepSelectPart;
+	}
+	public void setWizardStepSelectPart(
+			nxopen.blockstyler.Group wizardStepSelectPart)
+	{
+		this.wizardStepSelectPart = wizardStepSelectPart;
+	}
+	public nxopen.blockstyler.FileSelection getNativeFileBrowser0()
+	{
+		return nativeFileBrowser0;
+	}
+	public void setNativeFileBrowser0(
+			nxopen.blockstyler.FileSelection nativeFileBrowser0)
+	{
+		this.nativeFileBrowser0 = nativeFileBrowser0;
+	}
+	public nxopen.blockstyler.Group getWizardStepSelectPMIObjects()
+	{
+		return wizardStepSelectPMIObjects;
+	}
+	public void setWizardStepSelectPMIObjects(
+			nxopen.blockstyler.Group wizardStepSelectPMIObjects)
+	{
+		this.wizardStepSelectPMIObjects = wizardStepSelectPMIObjects;
+	}
+	public nxopen.blockstyler.Toggle getToggleAnnotations()
+	{
+		return toggleAnnotations;
+	}
+	public void setToggleAnnotations(nxopen.blockstyler.Toggle toggleAnnotations)
+	{
+		this.toggleAnnotations = toggleAnnotations;
+	}
+	public nxopen.blockstyler.Toggle getToggleDimensions()
+	{
+		return toggleDimensions;
+	}
+	public void setToggleDimensions(nxopen.blockstyler.Toggle toggleDimensions)
+	{
+		this.toggleDimensions = toggleDimensions;
+	}
+	public nxopen.blockstyler.Toggle getToggleFaceFinishes()
+	{
+		return toggleFaceFinishes;
+	}
+	public void setToggleFaceFinishes(nxopen.blockstyler.Toggle toggleFaceFinishes)
+	{
+		this.toggleFaceFinishes = toggleFaceFinishes;
+	}
+	public nxopen.blockstyler.Group getWizardStepObjects()
+	{
+		return wizardStepObjects;
+	}
+	public void setWizardStepObjects(nxopen.blockstyler.Group wizardStepObjects)
+	{
+		this.wizardStepObjects = wizardStepObjects;
+	}
+	public nxopen.blockstyler.TabControl getTabControl()
+	{
+		return tabControl;
+	}
+	public void setTabControl(nxopen.blockstyler.TabControl tabControl)
+	{
+		this.tabControl = tabControl;
+	}
+	public nxopen.blockstyler.Group getTabPage1()
+	{
+		return tabPage1;
+	}
+	public void setTabPage1(nxopen.blockstyler.Group tabPage1)
+	{
+		this.tabPage1 = tabPage1;
+	}
+	public nxopen.blockstyler.Tree getMasterAnnotationsTree()
+	{
+		return masterAnnotationsTree;
+	}
+	public void setMasterAnnotationsTree(nxopen.blockstyler.Tree masterAnnotations)
+	{
+		this.masterAnnotationsTree = masterAnnotations;
+	}
+	public nxopen.blockstyler.Group getTabPage2()
+	{
+		return tabPage2;
+	}
+	public void setTabPage2(nxopen.blockstyler.Group tabPage2)
+	{
+		this.tabPage2 = tabPage2;
+	}
+	public nxopen.blockstyler.Tree getMasterDimensionsTree()
+	{
+		return masterDimensionsTree;
+	}
+	public void setMasterDimensionsTree(nxopen.blockstyler.Tree masterDimensions)
+	{
+		this.masterDimensionsTree = masterDimensions;
+	}
+	public nxopen.blockstyler.Group getTabPage()
+	{
+		return tabPage;
+	}
+	public void setTabPage(nxopen.blockstyler.Group tabPage)
+	{
+		this.tabPage = tabPage;
+	}
+	public nxopen.blockstyler.Tree getMasterFaceFinishesTree()
+	{
+		return masterFaceFinishesTree;
+	}
+	public void setMasterFaceFinishesTree(nxopen.blockstyler.Tree masterFaceFinishes)
+	{
+		this.masterFaceFinishesTree = masterFaceFinishes;
 	}
     
 }

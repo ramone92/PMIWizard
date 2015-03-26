@@ -9,7 +9,7 @@
 //        Created by: uc-aleksi
 //              Version: NX 8.5
 //              Date: 03-26-2015  (Format: mm-dd-yyyy)
-//              Time: 15:02 (Format: hh-mm)
+//              Time: 16:33 (Format: hh-mm)
 //
 //==============================================================================
 
@@ -85,11 +85,11 @@ public class PMIWizard implements BlockDialog.Initialize, BlockDialog.DialogShow
     private nxopen.blockstyler.Group wizardStepObjects;// Block type: Group
     private nxopen.blockstyler.TabControl tabControl;// Block type: Tabs Page
     private nxopen.blockstyler.Group tabPage1;// Block type: Group
-    private nxopen.blockstyler.Tree masterAnnotations;// Block type: Tree Control
+    private nxopen.blockstyler.Tree masterAnnotationsTree;// Block type: Tree Control
     private nxopen.blockstyler.Group tabPage2;// Block type: Group
-    private nxopen.blockstyler.Tree masterDimensions;// Block type: Tree Control
+    private nxopen.blockstyler.Tree masterDimensionsTree;// Block type: Tree Control
     private nxopen.blockstyler.Group tabPage;// Block type: Group
-    private nxopen.blockstyler.Tree masterFaceFinishes;// Block type: Tree Control
+    private nxopen.blockstyler.Tree masterFaceFinishesTree;// Block type: Tree Control
     
     //------------------------------------------------------------------------------
     //Constructor for NX Styler class
@@ -249,55 +249,55 @@ public class PMIWizard implements BlockDialog.Initialize, BlockDialog.DialogShow
             wizardStepObjects = (nxopen.blockstyler.Group)theDialog.topBlock().findBlock("wizardStepObjects");
             tabControl = (nxopen.blockstyler.TabControl)theDialog.topBlock().findBlock("tabControl");
             tabPage1 = (nxopen.blockstyler.Group)theDialog.topBlock().findBlock("tabPage1");
-            masterAnnotations = (nxopen.blockstyler.Tree)theDialog.topBlock().findBlock("masterAnnotations");
+            masterAnnotationsTree = (nxopen.blockstyler.Tree)theDialog.topBlock().findBlock("masterAnnotationsTree");
             tabPage2 = (nxopen.blockstyler.Group)theDialog.topBlock().findBlock("tabPage2");
-            masterDimensions = (nxopen.blockstyler.Tree)theDialog.topBlock().findBlock("masterDimensions");
+            masterDimensionsTree = (nxopen.blockstyler.Tree)theDialog.topBlock().findBlock("masterDimensionsTree");
             tabPage = (nxopen.blockstyler.Group)theDialog.topBlock().findBlock("tabPage");
-            masterFaceFinishes = (nxopen.blockstyler.Tree)theDialog.topBlock().findBlock("masterFaceFinishes");
+            masterFaceFinishesTree = (nxopen.blockstyler.Tree)theDialog.topBlock().findBlock("masterFaceFinishesTree");
             //------------------------------------------------------------------------------
             //Registration of Treelist specific callbacks
             //------------------------------------------------------------------------------
-            //masterAnnotations.setOnExpandHandler(this);
+            //masterAnnotationsTree.setOnExpandHandler(this);
             
-            //masterAnnotations.setOnInsertColumnHandler(this);
+            //masterAnnotationsTree.setOnInsertColumnHandler(this);
             
-            //masterAnnotations.setOnInsertNodeHandler(this);
+            //masterAnnotationsTree.setOnInsertNodeHandler(this);
             
-            //masterAnnotations.setOnDeleteNodeHandler(this);
+            //masterAnnotationsTree.setOnDeleteNodeHandler(this);
             
-            //masterAnnotations.setOnPreSelectHandler(this);
+            //masterAnnotationsTree.setOnPreSelectHandler(this);
             
-            //masterAnnotations.setOnSelectHandler(this);
+            //masterAnnotationsTree.setOnSelectHandler(this);
             
-            //masterAnnotations.setOnStateChangeHandler(this);
+            //masterAnnotationsTree.setOnStateChangeHandler(this);
             
-            //masterAnnotations.setToolTipTextHandler(this);
+            //masterAnnotationsTree.setToolTipTextHandler(this);
             
-            //masterAnnotations.setColumnSortHandler(this);
+            //masterAnnotationsTree.setColumnSortHandler(this);
             
-            //masterAnnotations.setStateIconNameHandler(this);
+            //masterAnnotationsTree.setStateIconNameHandler(this);
             
-            //masterAnnotations.setOnBeginLabelEditHandler(this);
+            //masterAnnotationsTree.setOnBeginLabelEditHandler(this);
             
-            //masterAnnotations.setOnEndLabelEditHandler(this);
+            //masterAnnotationsTree.setOnEndLabelEditHandler(this);
             
-            //masterAnnotations.setOnEditOptionSelectedHandler(this);
+            //masterAnnotationsTree.setOnEditOptionSelectedHandler(this);
             
-            //masterAnnotations.setAskEditControlHandler(this);
+            //masterAnnotationsTree.setAskEditControlHandler(this);
             
-            //masterAnnotations.setOnMenuHandler(this);
+            //masterAnnotationsTree.setOnMenuHandler(this);
             
-            //masterAnnotations.setOnMenuSelectionHandler(this);
+            //masterAnnotationsTree.setOnMenuSelectionHandler(this);
             
-            //masterAnnotations.setIsDropAllowedHandler(this);
+            //masterAnnotationsTree.setIsDropAllowedHandler(this);
             
-            //masterAnnotations.setIsDragAllowedHandler(this);
+            //masterAnnotationsTree.setIsDragAllowedHandler(this);
             
-            //masterAnnotations.setOnDropHandler(this);
+            //masterAnnotationsTree.setOnDropHandler(this);
             
-            //masterAnnotations.setOnDropMenuHandler(this);
+            //masterAnnotationsTree.setOnDropMenuHandler(this);
             
-            //masterAnnotations.setOnDefaultActionHandler(this);
+            //masterAnnotationsTree.setOnDefaultActionHandler(this);
             
             //------------------------------------------------------------------------------
             //------------------------------------------------------------------------------
