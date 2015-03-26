@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8"/>
+	<classpathentry kind="lib" path="C:/Program Files/Siemens/NX 8.5/UGII/batchmesher_ui.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Siemens/NX 8.5/UGII/ICE.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Siemens/NX 8.5/UGII/NXOpen.jar" sourcepath="C:/Program Files/Siemens/NX 8.5/UGII/NXOpenRun.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Siemens/NX 8.5/UGII/NXOpenRemote.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Siemens/NX 8.5/UGII/NXOpenRun.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Siemens/NX 8.5/UGII/NXOpenUF.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Siemens/NX 8.5/UGII/NXOpenUFRemote.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Siemens/NX 8.5/UGII/NXOpenUFRun.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Siemens/NX 8.5/UGII/NXOpenUI.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Siemens/NX 8.5/UGII/NXOpenUIRemote.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Siemens/NX 8.5/UGII/NXOpenUIRun.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Siemens/NX 8.5/UGII/plmxml.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Siemens/NX 8.5/UGII/plmxml_extensions.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Siemens/NX 8.5/UGII/PTS.jar"/>
+	<classpathentry kind="lib" path="C:/Program Files/Siemens/NX 8.5/UGII/VerifyJava.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
