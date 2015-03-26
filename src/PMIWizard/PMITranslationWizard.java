@@ -7,8 +7,10 @@ import nxopen.blockstyler.*;
 
 public class PMITranslationWizard
 {
-	public Session theSession;
-    public UFSession theUFSession;
+	private Session theSession;
+	private UFSession theUFSession;
+	
+	private Part masterPart;
 	
 	private PMIWizardDialog pmiWizardDialog;
 	private AnnotationsTranslationWizard annotationsTranslationWizard;
@@ -23,19 +25,18 @@ public class PMITranslationWizard
 	
 	public PMITranslationWizard() throws NXException, RemoteException
 	{
-		// TODO to be written		
-		
+		// Session settings		
+		setTheSession((Session)SessionFactory.get("Session"));
+        setTheUFSession((UFSession)SessionFactory.get("UFSession"));		
 	}
 	
 	public PMITranslationWizard(PMIWizardDialog wizard) throws NXException, RemoteException
 	{
-		// Session settings
-		setTheSession((Session)SessionFactory.get("Session"));
-        setTheUFSession((UFSession)SessionFactory.get("UFSession"));
-		
+		this();
+				
 		// Initial settings
 		setPmiWizardDialog(wizard);		
-		setAnnotationsTranslationWizard(new AnnotationsTranslationWizard(getPmiWizardDialog().getMasterAnnotationsTree()));
+		
 		setDimensionsTranslationWizard(new DimensionsTranslationWizard(getPmiWizardDialog().getMasterDimensionsTree()));
 		setFaceFinishesTranslationWizard(new FaceFinishesTranslationWizard(getPmiWizardDialog().getMasterFaceFinishesTree()));
 		
@@ -53,18 +54,16 @@ public class PMITranslationWizard
     //------------------------------------------------------------------------------
 	private void callAnnotationsTranslationWizard() throws RemoteException, NXException
 	{
-		getPmiWizardDialog().getMasterAnnotationsTree().insertColumn(1, "Имя объекта", 500);
-    	//Node rootNode = getPmiWizardDialog().getMasterAnnotationsTree().createNode("root node");
-    	//getPmiWizardDialog().getMasterAnnotationsTree().insertNode(rootNode, null, null, NodeInsertOption.FIRST);
-    	//rootNode.expand(ExpandOption.TOGGLE);
-    	
-    	Node newNode;
-    	for (int i = 0; i < 5; i++)
+		if (getPmiWizardDialog().getToggleAnnotations().value())
 		{
-    		newNode = getPmiWizardDialog().getMasterAnnotationsTree().createNode("annotation node: " + i);
-    		getPmiWizardDialog().getMasterAnnotationsTree().insertNode(newNode, null, null, Tree.NodeInsertOption.LAST);        	
-		}    
-    			
+			getPmiWizardDialog().getTabMasterAnnotations().setShow(true);
+			setAnnotationsTranslationWizard(new AnnotationsTranslationWizard(getPmiWizardDialog().getMasterAnnotationsTree()));			
+		}
+		else
+		{
+			getPmiWizardDialog().getTabMasterAnnotations().setShow(false);
+		}
+				
 	}
 	
 	//------------------------------------------------------------------------------
@@ -72,16 +71,14 @@ public class PMITranslationWizard
     //------------------------------------------------------------------------------
 	private void callDimensionsTranslationWizard() throws RemoteException, NXException
 	{
-		getPmiWizardDialog().getMasterDimensionsTree().insertColumn(1, "Имя объекта", 500);
-    	//Node rootNode = getPmiWizardDialog().getMasterAnnotationsTree().createNode("root node");
-    	//getPmiWizardDialog().getMasterAnnotationsTree().insertNode(rootNode, null, null, NodeInsertOption.FIRST);
-    	//rootNode.expand(ExpandOption.TOGGLE);
-    	
-    	Node newNode;
-    	for (int i = 0; i < 5; i++)
+		if (getPmiWizardDialog().getToggleDimensions().value())
 		{
-    		newNode = getPmiWizardDialog().getMasterDimensionsTree().createNode("dimension node: " + i);
-    		getPmiWizardDialog().getMasterDimensionsTree().insertNode(newNode, null, null, Tree.NodeInsertOption.LAST);        	
+			getPmiWizardDialog().getTabMasterDimensions().setShow(true);
+			setDimensionsTranslationWizard(new DimensionsTranslationWizard(getPmiWizardDialog().getMasterDimensionsTree()));			
+		}
+		else
+		{
+			getPmiWizardDialog().getTabMasterDimensions().setShow(false);
 		}
 		
 	}
@@ -91,17 +88,13 @@ public class PMITranslationWizard
     //------------------------------------------------------------------------------
 	private void callFaceFinishesTranslationWizard() throws RemoteException, NXException
 	{
-		getPmiWizardDialog().getMasterFaceFinishesTree().insertColumn(1, "Имя объекта", 500);
-    	//Node rootNode = getPmiWizardDialog().getMasterAnnotationsTree().createNode("root node");
-    	//getPmiWizardDialog().getMasterAnnotationsTree().insertNode(rootNode, null, null, NodeInsertOption.FIRST);
-    	//rootNode.expand(ExpandOption.TOGGLE);
-    	
+		/*getPmiWizardDialog().getMasterFaceFinishesTree().insertColumn(1, "Имя объекта", 500);
     	Node newNode;
     	for (int i = 0; i < 5; i++)
 		{
     		newNode = getPmiWizardDialog().getMasterFaceFinishesTree().createNode("face finish node: " + i);
     		getPmiWizardDialog().getMasterFaceFinishesTree().insertNode(newNode, null, null, Tree.NodeInsertOption.LAST);        	
-		} 		
+		} */		
 	}
 	
 	//------------------------------------------------------------------------------
@@ -164,6 +157,16 @@ public class PMITranslationWizard
 	public void setTheUFSession(UFSession theUFSession)
 	{
 		this.theUFSession = theUFSession;
+	}
+
+	public Part getMasterPart()
+	{
+		return masterPart;
+	}
+
+	public void setMasterPart(Part masterPart)
+	{
+		this.masterPart = masterPart;
 	}
 
 	public PMIWizardDialog getPmiWizardDialog()

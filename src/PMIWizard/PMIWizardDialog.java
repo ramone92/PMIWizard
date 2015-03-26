@@ -86,12 +86,12 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
     private nxopen.blockstyler.Toggle toggleDimensions;// Block type: Toggle
     private nxopen.blockstyler.Toggle toggleFaceFinishes;// Block type: Toggle
     private nxopen.blockstyler.Group wizardStepObjects;// Block type: Group
+    private nxopen.blockstyler.Group tabMasterAnnotations;// Block type: Group
     private nxopen.blockstyler.TabControl tabControl;// Block type: Tabs Page
-    private nxopen.blockstyler.Group tabPage1;// Block type: Group
-    private nxopen.blockstyler.Tree masterAnnotationsTree;// Block type: Tree Control
-    private nxopen.blockstyler.Group tabPage2;// Block type: Group
+	private nxopen.blockstyler.Tree masterAnnotationsTree;// Block type: Tree Control
+    private nxopen.blockstyler.Group tabMasterDimensions;// Block type: Group
     private nxopen.blockstyler.Tree masterDimensionsTree;// Block type: Tree Control
-    private nxopen.blockstyler.Group tabPage;// Block type: Group
+    private nxopen.blockstyler.Group tabMasterFaceFinishes;// Block type: Group
     private nxopen.blockstyler.Tree masterFaceFinishesTree;// Block type: Tree Control
     
     private PMITranslationWizard pmiTranslationWizard; 
@@ -260,9 +260,9 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
             toggleFaceFinishes = (nxopen.blockstyler.Toggle)theDialog.topBlock().findBlock("toggleFaceFinishes");
             
             tabControl = (nxopen.blockstyler.TabControl)theDialog.topBlock().findBlock("tabControl");
-            tabPage1 = (nxopen.blockstyler.Group)theDialog.topBlock().findBlock("tabPage1");
-            tabPage2 = (nxopen.blockstyler.Group)theDialog.topBlock().findBlock("tabPage2");
-            tabPage = (nxopen.blockstyler.Group)theDialog.topBlock().findBlock("tabPage");
+            tabMasterAnnotations = (nxopen.blockstyler.Group)theDialog.topBlock().findBlock("tabMasterAnnotations");
+            tabMasterDimensions = (nxopen.blockstyler.Group)theDialog.topBlock().findBlock("tabMasterDimensions");
+            tabMasterFaceFinishes = (nxopen.blockstyler.Group)theDialog.topBlock().findBlock("tabMasterFaceFinishes");
             
             masterAnnotationsTree = (nxopen.blockstyler.Tree)theDialog.topBlock().findBlock("masterAnnotationsTree");            
             masterDimensionsTree = (nxopen.blockstyler.Tree)theDialog.topBlock().findBlock("masterDimensionsTree");            
@@ -694,13 +694,17 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
 	{
 		this.tabControl = tabControl;
 	}
-	public nxopen.blockstyler.Group getTabPage1()
+	public nxopen.blockstyler.Group getTabMasterAnnotations()
 	{
-		return tabPage1;
+		return tabMasterAnnotations;
 	}
-	public void setTabPage1(nxopen.blockstyler.Group tabPage1)
+	public nxopen.blockstyler.Group getTabMasterDimensions()
 	{
-		this.tabPage1 = tabPage1;
+		return tabMasterDimensions;
+	}
+	public void setTabMasterDimensions(nxopen.blockstyler.Group tabPage1)
+	{
+		this.tabMasterAnnotations = tabPage1;
 	}
 	public nxopen.blockstyler.Tree getMasterAnnotationsTree()
 	{
@@ -710,13 +714,9 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
 	{
 		this.masterAnnotationsTree = masterAnnotations;
 	}
-	public nxopen.blockstyler.Group getTabPage2()
-	{
-		return tabPage2;
-	}
 	public void setTabPage2(nxopen.blockstyler.Group tabPage2)
 	{
-		this.tabPage2 = tabPage2;
+		this.tabMasterDimensions = tabPage2;
 	}
 	public nxopen.blockstyler.Tree getMasterDimensionsTree()
 	{
@@ -726,13 +726,13 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
 	{
 		this.masterDimensionsTree = masterDimensions;
 	}
-	public nxopen.blockstyler.Group getTabPage()
+	public nxopen.blockstyler.Group getTabMasterFaceFinishes()
 	{
-		return tabPage;
+		return tabMasterFaceFinishes;
 	}
-	public void setTabPage(nxopen.blockstyler.Group tabPage)
+	public void setTabMasterFaceFinishes(nxopen.blockstyler.Group tabPage)
 	{
-		this.tabPage = tabPage;
+		this.tabMasterFaceFinishes = tabPage;
 	}
 	public nxopen.blockstyler.Tree getMasterFaceFinishesTree()
 	{

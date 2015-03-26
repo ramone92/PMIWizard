@@ -1,9 +1,11 @@
 package PMIWizard;
 
+import java.rmi.RemoteException;
+
 import nxopen.*;
 import nxopen.blockstyler.*;
 
-public class FaceFinishesTranslationWizard extends TranslationWizard
+public class FaceFinishesTranslationWizard extends PMITranslationWizard
 {
 	
 	private Tree masterFaceFinishesTree;
@@ -12,7 +14,7 @@ public class FaceFinishesTranslationWizard extends TranslationWizard
     //Constructors
     //------------------------------------------------------------------------------
 	
-	public FaceFinishesTranslationWizard(Tree masterFaceFinishesTree)
+	public FaceFinishesTranslationWizard(Tree masterFaceFinishesTree) throws NXException, RemoteException
 	{
 		setMasterFaceFinishesTree(masterFaceFinishesTree);				
 	}
