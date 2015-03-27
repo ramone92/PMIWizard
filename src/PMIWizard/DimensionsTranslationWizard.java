@@ -1,6 +1,7 @@
 package PMIWizard;
 
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 import nxopen.*;
 import nxopen.blockstyler.*;
@@ -9,6 +10,7 @@ public class DimensionsTranslationWizard extends PMITranslationWizard
 {
 
 	private Tree masterDimensionsTree;
+	private ArrayList<String> masterDimensionsList;
 	
 	//------------------------------------------------------------------------------
     //Constructors
@@ -16,31 +18,17 @@ public class DimensionsTranslationWizard extends PMITranslationWizard
 	
 	public DimensionsTranslationWizard(Tree masterDimensionsTree) throws NXException, RemoteException
 	{
-		super.print("DimensionsTranslationWizard");
+		super.print("DimensionsTranslationWizard created");
 		
 		setMasterDimensionsTree(masterDimensionsTree);
-		// TODO throws nullPointerException
-		//fillTreeTest();
-		fillTree();
+		//fillTree();
     	
 	}
 	
 	//------------------------------------------------------------------------------
     // Private methods
     //------------------------------------------------------------------------------
-	
-	private void fillTree() throws RemoteException, NXException
-	{
-		getMasterDimensionsTree().insertColumn(1, "Имя объекта", 500);
-    	Node newNode;
-    	for (int i = 0; i < 5; i++)
-		{
-    		newNode = getMasterDimensionsTree().createNode("dimension node: " + i);
-    		getMasterDimensionsTree().insertNode(newNode, null, null, Tree.NodeInsertOption.LAST);        	
-		}
 		
-	}
-	
 	private void fillTreeTest() throws RemoteException, NXException
 	{
 		getMasterDimensionsTree().insertColumn(1, "Имя объекта", 500);
@@ -53,6 +41,21 @@ public class DimensionsTranslationWizard extends PMITranslationWizard
 		
 	}
 
+	//------------------------------------------------------------------------------
+    // Public methods
+    //------------------------------------------------------------------------------
+	
+	public void fillTree() throws RemoteException, NXException
+	{
+		getMasterDimensionsTree().insertColumn(1, "Имя объекта", 500);
+    	Node newNode;
+    	for (int i = 0; i < 5; i++)
+		{
+    		newNode = getMasterDimensionsTree().createNode("dimension node: " + i);
+    		getMasterDimensionsTree().insertNode(newNode, null, null, Tree.NodeInsertOption.LAST);        	
+		}
+		
+	}	
 
 	//------------------------------------------------------------------------------
     //Getters and Setters

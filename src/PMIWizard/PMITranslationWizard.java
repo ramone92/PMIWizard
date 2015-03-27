@@ -45,47 +45,7 @@ public class PMITranslationWizard
 	//------------------------------------------------------------------------------
     // Private methods
     //------------------------------------------------------------------------------
-	
-	//------------------------------------------------------------------------------
-    // This method called from PMITranslationWizard() constructor to open part from file system
-    //------------------------------------------------------------------------------
-	private void openMasterPart() throws RemoteException, NXException
-	{
-		Part part;
-		String partPath = getPmiWizardDialog().getPartFileBrowser().path(); 
 		
-		print("partPath is " + partPath);
-		
-		if (partPath.isEmpty())
-		{
-			print("empty Part");			
-		}
-		else
-		{
-			print("MasterPart opened");
-		
-			PartCollection.OpenBaseData openBaseData = getTheSession().parts().openBase(partPath);
-			part = (Part) openBaseData.part;
-			setMasterPart(part);
-			
-			openBaseData.loadStatus.dispose();
-		    openBaseData.loadStatus = null;
-		    
-		    print("Open: master part is null:" + (getMasterPart() == null));
-		}		
-		
-	}
-	
-	//------------------------------------------------------------------------------
-    // This method called to close master part
-    //------------------------------------------------------------------------------
-	public void closeMasterPart() throws RemoteException, NXException
-	{
-		print("closeMasterPart");
-		print("Close: master part is null:" + (getMasterPart() == null));
-		((BasePart)getMasterPart()).close(BasePart.CloseWholeTree.TRUE, BasePart.CloseModified.CLOSE_MODIFIED, null);		
-	}
-	
 	//------------------------------------------------------------------------------
     // This method called from activate() method to work with AnnotationsTranslationWizard
     //------------------------------------------------------------------------------
@@ -94,7 +54,8 @@ public class PMITranslationWizard
 		if (getPmiWizardDialog().getToggleAnnotations().value())
 		{
 			getPmiWizardDialog().getTabMasterAnnotations().setShow(true);
-			setAnnotationsTranslationWizard(new AnnotationsTranslationWizard(getPmiWizardDialog().getMasterAnnotationsTree()));			
+			if (getAnnotationsTranslationWizard() == null)
+				setAnnotationsTranslationWizard(new AnnotationsTranslationWizard(getPmiWizardDialog().getMasterAnnotationsTree()));			
 		}
 		else
 		{
@@ -110,10 +71,13 @@ public class PMITranslationWizard
 	{
 		if (getPmiWizardDialog().getToggleDimensions().value())
 		{
-			//print("callDimensionsTranslationWizard");
-			
+			//print("callDimensionsTranslationWizard");			
 			getPmiWizardDialog().getTabMasterDimensions().setShow(true);
-			setDimensionsTranslationWizard(new DimensionsTranslationWizard(getPmiWizardDialog().getMasterDimensionsTree()));			
+			if (getDimensionsTranslationWizard() == null)
+				setDimensionsTranslationWizard(new DimensionsTranslationWizard(getPmiWizardDialog().getMasterDimensionsTree()));	
+			
+			getDimensionsTranslationWizard().fillTree();
+			
 		}
 		else
 		{
@@ -141,19 +105,6 @@ public class PMITranslationWizard
     //------------------------------------------------------------------------------	
 	
 	//------------------------------------------------------------------------------
-    // This method opens listing window and print string from message parameter
-    //------------------------------------------------------------------------------
-	public void print(String message) throws RemoteException, NXException
-	{
-		if (!getTheUFSession().ui().isListingWindowOpen())
-			getTheUFSession().ui().openListingWindow();
-			
-		getTheUFSession().ui().writeListingWindow(message);
-		getTheUFSession().ui().writeListingWindow("\n");
-		
-	}	
-	
-	//------------------------------------------------------------------------------
     // This method called at changing wizard step
     //------------------------------------------------------------------------------
 	public void activate() throws RemoteException, NXException
@@ -178,10 +129,7 @@ public class PMITranslationWizard
 			callAnnotationsTranslationWizard();
 			callDimensionsTranslationWizard();
 			callFaceFinishesTranslationWizard();
-			
-			// TODO
-			//closeMasterPart();
-			
+		
 			break;
 			
 		default:
@@ -190,6 +138,59 @@ public class PMITranslationWizard
 		
 	}
 
+	//------------------------------------------------------------------------------
+    // This method called from activate() constructor to open part from file system
+    //------------------------------------------------------------------------------
+	public void openMasterPart() throws RemoteException, NXException
+	{
+		if (getMasterPart() != null)
+		{
+			print("Master part is already opened");
+			return;
+		}
+			
+		Part part;
+		String partPath = getPmiWizardDialog().getPartFileBrowser().path(); 
+		
+		if (partPath.isEmpty())
+		{
+			print("Part path is empty");
+			return;
+		}
+		
+		print("Opening master part");
+	
+		PartCollection.OpenBaseData openBaseData = getTheSession().parts().openBase(partPath);
+		part = (Part) openBaseData.part;
+		setMasterPart(part);
+		
+		openBaseData.loadStatus.dispose();
+	    openBaseData.loadStatus = null;
+		
+	}
+	
+	//------------------------------------------------------------------------------
+    // This method called to close master part
+    //------------------------------------------------------------------------------
+	public void closeMasterPart() throws RemoteException, NXException
+	{
+		print("Closing master part");
+		((BasePart)getMasterPart()).close(BasePart.CloseWholeTree.TRUE, BasePart.CloseModified.CLOSE_MODIFIED, null);		
+	}
+	
+	//------------------------------------------------------------------------------
+    // This method opens listing window and print string from message parameter
+    //------------------------------------------------------------------------------
+	public void print(String message) throws RemoteException, NXException
+	{
+		if (!getTheUFSession().ui().isListingWindowOpen())
+			getTheUFSession().ui().openListingWindow();
+			
+		getTheUFSession().ui().writeListingWindow(message);
+		getTheUFSession().ui().writeListingWindow("\n");
+		
+	}
+	
 	//------------------------------------------------------------------------------
     //Getters and Setters
     //------------------------------------------------------------------------------
