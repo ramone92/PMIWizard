@@ -35,6 +35,8 @@ package PMIWizard;
 //------------------------------------------------------------------------------
 //These imports are needed for the following template code
 //------------------------------------------------------------------------------
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.rmi.RemoteException;
 
 import nxopen.*;
@@ -94,7 +96,7 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
     private nxopen.blockstyler.Group tabMasterFaceFinishes;// Block type: Group
     private nxopen.blockstyler.Tree masterFaceFinishesTree;// Block type: Tree Control
     
-    private PMITranslationWizard pmiTranslationWizard; 
+    private static PMITranslationWizard pmiTranslationWizard; 
         
     //------------------------------------------------------------------------------
     //Constructor for NX Styler class
@@ -121,6 +123,10 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
             //---- Enter your exception handling code here -----
             throw new Exception(ex);
         }
+        finally
+        {
+        	//getPMITranslationWizard().print("PMIWizardDialog");
+        }
     }
     //------------------------------- DIALOG LAUNCHING ---------------------------------
     //
@@ -143,7 +149,7 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
     //        2) Invoke the Shared Library through File->Execute->NX Open menu.
     //
     //------------------------------------------------------------------------------
-    public static void main(String [] argv) throws Exception
+	public static void main(String [] argv) throws Exception
     {
     	PMIWizardDialog thewizard = null;
         try
@@ -158,7 +164,7 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
             theUI.nxmessageBox().show("Block Styler", nxopen.NXMessageBox.DialogType.ERROR, ex.getMessage());
         }
         finally
-        {
+        {        	
             if(thewizard != null)
             {
                 thewizard.dispose();
@@ -184,12 +190,11 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
     // MUST NOT use this option since it will UNLOAD your NX Open application image
     // from the menubar.
     //------------------------------------------------------------------------------
-    public int getUnloadOption() throws RemoteException, NXException
-    {
-    	getPMITranslationWizard().print("getUnloadOption");
-    	  
-    	getPMITranslationWizard().getMasterPart().close(BasePart.CloseWholeTree.TRUE, BasePart.CloseModified.CLOSE_MODIFIED, null);
-        return BaseSession.LibraryUnloadOption.IMMEDIATELY;        
+    public static final int getUnloadOption() throws RemoteException, NXException
+    {    	
+    	getPMITranslationWizard().print("***getUnloadOption***");
+    	getPMITranslationWizard().closeMasterPart();
+    	return BaseSession.LibraryUnloadOption.IMMEDIATELY;        
     }
     
     //------------------------------------------------------------------------------
@@ -368,10 +373,22 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
         try
         {
             //---- Enter your callback code here -----
+        	//getPMITranslationWizard().closeMasterPart();
         }
         catch(Exception ex)
         {
             //---- Enter your exception handling code here -----
+        	if(getTheUFSession()!=null)
+            {
+                StringWriter s = new StringWriter();
+                PrintWriter p = new PrintWriter(s);
+                p.println("Caught exception " + ex );
+                ex.printStackTrace(p);
+                getTheUFSession().ui().writeListingWindow("\nFailed");
+                getTheUFSession().ui().writeListingWindow("\n"+ex.getMessage());
+                getTheUFSession().ui().writeListingWindow("\n"+s.getBuffer().toString());
+            }    	
+        	
             errorCode = 1;
             theUI.nxmessageBox().show("Block Styler", nxopen.NXMessageBox.DialogType.ERROR, ex.getMessage());
         }
@@ -572,13 +589,13 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
     //Getters and Setters
     //------------------------------------------------------------------------------    
     
-	public PMITranslationWizard getPMITranslationWizard()
+	public static PMITranslationWizard getPMITranslationWizard()
 	{
 		return pmiTranslationWizard;
 	}
-	public void setPMITranslationWizard(PMITranslationWizard translationWizard)
+	public static void setPMITranslationWizard(PMITranslationWizard translationWizard)
 	{
-		this.pmiTranslationWizard = translationWizard;
+		PMIWizardDialog.pmiTranslationWizard = translationWizard;
 	}
 	public static Session getTheSession()
 	{
@@ -637,9 +654,8 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
 	{
 		this.wizardStepSelectPart = wizardStepSelectPart;
 	}
-	public nxopen.blockstyler.FileSelection getPartFileBrowser() throws RemoteException, NXException
+	public nxopen.blockstyler.FileSelection getPartFileBrowser()
 	{
-		getPMITranslationWizard().print("getPartFileBrowser");
 		return partFileBrowser;
 	}
 	public void setPartFileBrowser(

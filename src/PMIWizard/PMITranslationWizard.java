@@ -38,7 +38,7 @@ public class PMITranslationWizard
 		setPmiWizardDialog(wizard);
 		
 		//TODO to be written		
-		//openMasterPart();
+
 	}
 	
 	
@@ -62,15 +62,28 @@ public class PMITranslationWizard
 		}
 		else
 		{
-			print("open MasterPart");
+			print("MasterPart opened");
 		
 			PartCollection.OpenBaseData openBaseData = getTheSession().parts().openBase(partPath);
-			openBaseData.loadStatus.dispose();
-		    openBaseData.loadStatus = null;		    
 			part = (Part) openBaseData.part;
 			setMasterPart(part);
+			
+			openBaseData.loadStatus.dispose();
+		    openBaseData.loadStatus = null;
+		    
+		    print("Open: master part is null:" + (getMasterPart() == null));
 		}		
 		
+	}
+	
+	//------------------------------------------------------------------------------
+    // This method called to close master part
+    //------------------------------------------------------------------------------
+	public void closeMasterPart() throws RemoteException, NXException
+	{
+		print("closeMasterPart");
+		print("Close: master part is null:" + (getMasterPart() == null));
+		((BasePart)getMasterPart()).close(BasePart.CloseWholeTree.TRUE, BasePart.CloseModified.CLOSE_MODIFIED, null);		
 	}
 	
 	//------------------------------------------------------------------------------
@@ -148,7 +161,7 @@ public class PMITranslationWizard
 		setCurrentWizardStep(getPmiWizardDialog().getWizard().currentStep());
 		
 		theUFSession.ui().openListingWindow();
-    	theUFSession.ui().writeListingWindow("currentWizardStep is " + getCurrentWizardStep() + "\n");
+    	theUFSession.ui().writeListingWindow("currentWizardStep = " + getCurrentWizardStep() + "\n");
     	
 		switch (getCurrentWizardStep())
 		{
@@ -161,9 +174,13 @@ public class PMITranslationWizard
 			break;
 			
 		case 2:
+			
 			callAnnotationsTranslationWizard();
 			callDimensionsTranslationWizard();
 			callFaceFinishesTranslationWizard();
+			
+			// TODO
+			//closeMasterPart();
 			
 			break;
 			
@@ -172,7 +189,6 @@ public class PMITranslationWizard
 		}
 		
 	}
-	
 
 	//------------------------------------------------------------------------------
     //Getters and Setters
