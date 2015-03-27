@@ -80,7 +80,7 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
     private nxopen.blockstyler.BlockDialog theDialog;
     private nxopen.blockstyler.Wizard wizard;// Block type: Wizard
     private nxopen.blockstyler.Group wizardStepSelectPart;// Block type: Group
-    private nxopen.blockstyler.FileSelection nativeFileBrowser0;// Block type: NativeFileBrowser
+    private nxopen.blockstyler.FileSelection partFileBrowser;// Block type: NativeFileBrowser
     private nxopen.blockstyler.Group wizardStepSelectPMIObjects;// Block type: Group
     private nxopen.blockstyler.Toggle toggleAnnotations;// Block type: Toggle
     private nxopen.blockstyler.Toggle toggleDimensions;// Block type: Toggle
@@ -184,11 +184,12 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
     // MUST NOT use this option since it will UNLOAD your NX Open application image
     // from the menubar.
     //------------------------------------------------------------------------------
-    public static final int getUnloadOption()
+    public int getUnloadOption() throws RemoteException, NXException
     {
-        //return BaseSession.LibraryUnloadOption.EXPLICITLY;
-         return BaseSession.LibraryUnloadOption.IMMEDIATELY;
-        // return BaseSession.LibraryUnloadOption.ATTERMINATION;
+    	getPMITranslationWizard().print("getUnloadOption");
+    	  
+    	getPMITranslationWizard().getMasterPart().close(BasePart.CloseWholeTree.TRUE, BasePart.CloseModified.CLOSE_MODIFIED, null);
+        return BaseSession.LibraryUnloadOption.IMMEDIATELY;        
     }
     
     //------------------------------------------------------------------------------
@@ -253,7 +254,7 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
             wizardStepSelectPMIObjects = (nxopen.blockstyler.Group)theDialog.topBlock().findBlock("wizardStepSelectPMIObjects");
             wizardStepObjects = (nxopen.blockstyler.Group)theDialog.topBlock().findBlock("wizardStepObjects");
             
-            nativeFileBrowser0 = (nxopen.blockstyler.FileSelection)theDialog.topBlock().findBlock("nativeFileBrowser0");
+            partFileBrowser = (nxopen.blockstyler.FileSelection)theDialog.topBlock().findBlock("partFileBrowser");
             
             toggleAnnotations = (nxopen.blockstyler.Toggle)theDialog.topBlock().findBlock("toggleAnnotations");
             toggleDimensions = (nxopen.blockstyler.Toggle)theDialog.topBlock().findBlock("toggleDimensions");
@@ -384,7 +385,7 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
     {
         try
         {
-            if(block == nativeFileBrowser0)
+            if(block == partFileBrowser)
             {
             //---------Enter your code here-----------
             }
@@ -636,14 +637,15 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
 	{
 		this.wizardStepSelectPart = wizardStepSelectPart;
 	}
-	public nxopen.blockstyler.FileSelection getNativeFileBrowser0()
+	public nxopen.blockstyler.FileSelection getPartFileBrowser() throws RemoteException, NXException
 	{
-		return nativeFileBrowser0;
+		getPMITranslationWizard().print("getPartFileBrowser");
+		return partFileBrowser;
 	}
-	public void setNativeFileBrowser0(
+	public void setPartFileBrowser(
 			nxopen.blockstyler.FileSelection nativeFileBrowser0)
 	{
-		this.nativeFileBrowser0 = nativeFileBrowser0;
+		this.partFileBrowser = nativeFileBrowser0;
 	}
 	public nxopen.blockstyler.Group getWizardStepSelectPMIObjects()
 	{

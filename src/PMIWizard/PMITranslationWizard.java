@@ -35,19 +35,43 @@ public class PMITranslationWizard
 		this();
 				
 		// Initial settings
-		setPmiWizardDialog(wizard);		
-		
-		setDimensionsTranslationWizard(new DimensionsTranslationWizard(getPmiWizardDialog().getMasterDimensionsTree()));
-		setFaceFinishesTranslationWizard(new FaceFinishesTranslationWizard(getPmiWizardDialog().getMasterFaceFinishesTree()));
+		setPmiWizardDialog(wizard);
 		
 		//TODO to be written		
-		
+		//openMasterPart();
 	}
 	
 	
 	//------------------------------------------------------------------------------
     // Private methods
     //------------------------------------------------------------------------------
+	
+	//------------------------------------------------------------------------------
+    // This method called from PMITranslationWizard() constructor to open part from file system
+    //------------------------------------------------------------------------------
+	private void openMasterPart() throws RemoteException, NXException
+	{
+		Part part;
+		String partPath = getPmiWizardDialog().getPartFileBrowser().path(); 
+		
+		print("partPath is " + partPath);
+		
+		if (partPath.isEmpty())
+		{
+			print("empty Part");			
+		}
+		else
+		{
+			print("open MasterPart");
+		
+			PartCollection.OpenBaseData openBaseData = getTheSession().parts().openBase(partPath);
+			openBaseData.loadStatus.dispose();
+		    openBaseData.loadStatus = null;		    
+			part = (Part) openBaseData.part;
+			setMasterPart(part);
+		}		
+		
+	}
 	
 	//------------------------------------------------------------------------------
     // This method called from activate() method to work with AnnotationsTranslationWizard
@@ -73,6 +97,8 @@ public class PMITranslationWizard
 	{
 		if (getPmiWizardDialog().getToggleDimensions().value())
 		{
+			//print("callDimensionsTranslationWizard");
+			
 			getPmiWizardDialog().getTabMasterDimensions().setShow(true);
 			setDimensionsTranslationWizard(new DimensionsTranslationWizard(getPmiWizardDialog().getMasterDimensionsTree()));			
 		}
@@ -102,6 +128,19 @@ public class PMITranslationWizard
     //------------------------------------------------------------------------------	
 	
 	//------------------------------------------------------------------------------
+    // This method opens listing window and print string from message parameter
+    //------------------------------------------------------------------------------
+	public void print(String message) throws RemoteException, NXException
+	{
+		if (!getTheUFSession().ui().isListingWindowOpen())
+			getTheUFSession().ui().openListingWindow();
+			
+		getTheUFSession().ui().writeListingWindow(message);
+		getTheUFSession().ui().writeListingWindow("\n");
+		
+	}	
+	
+	//------------------------------------------------------------------------------
     // This method called at changing wizard step
     //------------------------------------------------------------------------------
 	public void activate() throws RemoteException, NXException
@@ -118,7 +157,7 @@ public class PMITranslationWizard
 			break;
 			
 		case 1:		
-			
+			openMasterPart();
 			break;
 			
 		case 2:
