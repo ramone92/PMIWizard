@@ -76,7 +76,7 @@ public class PMITranslationWizard
 			if (getDimensionsTranslationWizard() == null)
 				setDimensionsTranslationWizard(new DimensionsTranslationWizard(getPmiWizardDialog().getMasterDimensionsTree()));	
 			
-			getDimensionsTranslationWizard().fillTree();
+			//getDimensionsTranslationWizard().fillTree();
 			
 		}
 		else
@@ -111,9 +111,8 @@ public class PMITranslationWizard
 	{
 		setCurrentWizardStep(getPmiWizardDialog().getWizard().currentStep());
 		
-		theUFSession.ui().openListingWindow();
-    	theUFSession.ui().writeListingWindow("currentWizardStep = " + getCurrentWizardStep() + "\n");
-    	
+		print("***currentWizardStep = " + getCurrentWizardStep());
+		
 		switch (getCurrentWizardStep())
 		{
 		case 0:
@@ -158,7 +157,7 @@ public class PMITranslationWizard
 			return;
 		}
 		
-		print("Opening master part");
+		print("*** 1. Opening master part***");
 	
 		PartCollection.OpenBaseData openBaseData = getTheSession().parts().openBase(partPath);
 		part = (Part) openBaseData.part;
@@ -181,13 +180,21 @@ public class PMITranslationWizard
 	//------------------------------------------------------------------------------
     // This method opens listing window and print string from message parameter
     //------------------------------------------------------------------------------
-	public void print(String message) throws RemoteException, NXException
+	public void print(String message)
 	{
-		if (!getTheUFSession().ui().isListingWindowOpen())
-			getTheUFSession().ui().openListingWindow();
+		try
+		{
+			if (!getTheUFSession().ui().isListingWindowOpen())
+				getTheUFSession().ui().openListingWindow();
 			
-		getTheUFSession().ui().writeListingWindow(message);
-		getTheUFSession().ui().writeListingWindow("\n");
+			getTheUFSession().ui().writeListingWindow(message);
+			getTheUFSession().ui().writeListingWindow("\n");
+			
+		} catch (RemoteException | NXException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 	
@@ -217,11 +224,15 @@ public class PMITranslationWizard
 
 	public Part getMasterPart()
 	{
+		print("*** 4. getMasterPart ***");
+		print("* master part is " + masterPart.toString());
 		return masterPart;
 	}
 
 	public void setMasterPart(Part masterPart)
 	{
+		print("*** 2. setMasterPart ***");
+		print("* master part is " + masterPart.toString());
 		this.masterPart = masterPart;
 	}
 
