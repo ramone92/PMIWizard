@@ -1,5 +1,7 @@
 package PMIWizard;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.rmi.RemoteException;
 
 import nxopen.*;
@@ -74,10 +76,15 @@ public class PMITranslationWizard
 			//print("callDimensionsTranslationWizard");			
 			getPmiWizardDialog().getTabMasterDimensions().setShow(true);
 			if (getDimensionsTranslationWizard() == null)
-				setDimensionsTranslationWizard(new DimensionsTranslationWizard(getPmiWizardDialog().getMasterDimensionsTree()));	
-			
-			//getDimensionsTranslationWizard().fillTree();
-			
+			{
+				DimensionsTranslationWizard dtw = new DimensionsTranslationWizard();
+				dtw.setMasterPart(masterPart);
+				dtw.test();
+				setDimensionsTranslationWizard(dtw);
+			}
+				
+			//setDimensionsTranslationWizard(new DimensionsTranslationWizard(getPmiWizardDialog().getMasterDimensionsTree()));	
+			//getDimensionsTranslationWizard().fillTree();			
 		}
 		else
 		{
@@ -111,7 +118,7 @@ public class PMITranslationWizard
 	{
 		setCurrentWizardStep(getPmiWizardDialog().getWizard().currentStep());
 		
-		print("***currentWizardStep = " + getCurrentWizardStep());
+		print("*** currentWizardStep = " + getCurrentWizardStep());
 		
 		switch (getCurrentWizardStep())
 		{
@@ -142,30 +149,33 @@ public class PMITranslationWizard
     //------------------------------------------------------------------------------
 	public void openMasterPart() throws RemoteException, NXException
 	{
+		print("*** 1. Opening master part ***");
+		
 		if (getMasterPart() != null)
 		{
 			print("Master part is already opened");
 			return;
 		}
-			
-		Part part;
-		String partPath = getPmiWizardDialog().getPartFileBrowser().path(); 
 		
-		if (partPath.isEmpty())
+		Part part;
+		String partPath = getPmiWizardDialog().getPartFileBrowser().path();
+		/*if (partPath.isEmpty())
 		{
 			print("Part path is empty");
 			return;
 		}
+		else
+		{
+			print("Path is " + partPath);
+		}*/
 		
-		print("*** 1. Opening master part***");
-	
 		PartCollection.OpenBaseData openBaseData = getTheSession().parts().openBase(partPath);
 		part = (Part) openBaseData.part;
 		setMasterPart(part);
 		
 		openBaseData.loadStatus.dispose();
 	    openBaseData.loadStatus = null;
-		
+			
 	}
 	
 	//------------------------------------------------------------------------------
@@ -173,7 +183,7 @@ public class PMITranslationWizard
     //------------------------------------------------------------------------------
 	public void closeMasterPart() throws RemoteException, NXException
 	{
-		print("Closing master part");
+		//print("Closing master part");
 		((BasePart)getMasterPart()).close(BasePart.CloseWholeTree.TRUE, BasePart.CloseModified.CLOSE_MODIFIED, null);		
 	}
 	
@@ -224,8 +234,9 @@ public class PMITranslationWizard
 
 	public Part getMasterPart()
 	{
-		print("*** 4. getMasterPart ***");
-		print("* master part is " + masterPart.toString());
+		print("*** 4. getMasterPart *** is null = " + (masterPart == null));
+		if (masterPart != null)
+			print("* master part is " + masterPart.toString());
 		return masterPart;
 	}
 

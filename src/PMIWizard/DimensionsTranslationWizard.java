@@ -5,6 +5,8 @@ import java.io.StringWriter;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
+import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
+
 import nxopen.*;
 import nxopen.annotations.*;
 import nxopen.blockstyler.*;
@@ -21,12 +23,12 @@ public class DimensionsTranslationWizard extends PMITranslationWizard
     //------------------------------------------------------------------------------
 
     //This constructor invokes from PMITranslationWizard.callDimensionsTranslationWizard()
-	public DimensionsTranslationWizard(Tree masterDimensionsTree) throws NXException, RemoteException
+	public DimensionsTranslationWizard() throws NXException, RemoteException
 	{
 		print("*** 3. DimensionsTranslationWizard created ***");
 		//getMasterDimensions();
 		setMasterDimensionsTree(masterDimensionsTree);
-    	//test();
+		//test();
 	}
 	
 	//------------------------------------------------------------------------------
@@ -66,49 +68,30 @@ public class DimensionsTranslationWizard extends PMITranslationWizard
 		
 	}
 
-	private void test() throws RemoteException, NXException
+	public void test() throws RemoteException, NXException
 	{
 		try
 		{
 			print("---------------start of test function---------------");
 			
-			print("*master part = null: " + (getMasterPart() == null));
 			AnnotationManager annotationManager = getMasterPart().annotations();
 			PmiManager pmiManager = getMasterPart().pmiManager();
 			PmiCollection pmiCollection = pmiManager.pmis();
 			
-			print("*an manager = null: " + annotationManager.equals(null));
-			
 			TaggedObjectCollection.Iterator it = pmiCollection.iterator();
 			Object taggedObject;
-			Annotation[] annotations;
 			Pmi pmi;
-			Associativity associativity;
 			while(it.hasNext())
 			{
-				taggedObject = it.next();
-				if(taggedObject instanceof Pmi)
-					getTheUFSession().ui().writeListingWindow("instanceof Pmi\n");
-				else
-					getTheUFSession().ui().writeListingWindow("not instanceof Pmi\n");
-				
+				taggedObject = it.next();				
 				pmi = (Pmi) taggedObject;
-				annotations = pmi.getDisplayInstances();
-				getTheUFSession().ui().writeListingWindow("Number of annotations " + annotations.length + "\n");
-								
-				for(int i = 0; i < annotations.length; i++)
+				print("*PMI object*: " + pmi.journalIdentifier());
+				AssociatedObject ao = pmi.getAssociatedObject();
+				DisplayableObject dispObjs[] = ao.getObjects();
+				for (DisplayableObject dispObject : dispObjs)
 				{
-					associativity = annotations[i].getAssociativity(i + 1);
-					NXObject obj = associativity.firstObject();
-					/*theUFSession.ui().writeListingWindow("an - " + annotations[i].journalIdentifier() + "\n");
-					theUFSession.ui().writeListingWindow("ass - " + obj.toString() + "\n");
-					theUFSession.ui().writeListingWindow("ass j - " + obj.journalIdentifier() + "\n");*/
-					getTheUFSession().ui().writeListingWindow("an - " + ((Dimension)annotations[i]).computedSize()+ "\n");
+					print(dispObject.journalIdentifier());
 				}
-				
-				getTheUFSession().ui().writeListingWindow(taggedObject.toString() + "\n");
-				//theUFSession.ui().writeListingWindow(taggedObject.getClass().getName() + "\n");
-				getTheUFSession().ui().writeListingWindow("---------------end of test function---------------\n");
 			}
 		} 
 		catch (RemoteException | NXException ex)
