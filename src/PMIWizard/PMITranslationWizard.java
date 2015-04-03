@@ -79,6 +79,17 @@ public class PMITranslationWizard
 			{
 				DimensionsTranslationWizard dtw = new DimensionsTranslationWizard();
 				dtw.setMasterPart(masterPart);
+				getPmiWizardDialog().getMasterDimensionsTree().insertColumn(0, "Имя объекта", 500);
+		
+				//-------------
+				for (int i = 0; i < 5; i++)
+				{
+					Node newNode = getPmiWizardDialog().getMasterDimensionsTree().createNode("" + i);
+					getPmiWizardDialog().getMasterDimensionsTree().insertNode(newNode, null, null, Tree.NodeInsertOption.LAST);
+				}
+				//-------------
+				
+				dtw.setMasterDimensionsTree(getPmiWizardDialog().getMasterDimensionsTree());
 				dtw.test();
 				setDimensionsTranslationWizard(dtw);
 			}
@@ -234,16 +245,16 @@ public class PMITranslationWizard
 
 	public Part getMasterPart()
 	{
-		print("*** 4. getMasterPart *** is null = " + (masterPart == null));
-		if (masterPart != null)
-			print("* master part is " + masterPart.toString());
+		//print("*** 4. getMasterPart *** is null = " + (masterPart == null));
+		//if (masterPart != null)
+			//print("* master part is " + masterPart.toString());
 		return masterPart;
 	}
 
 	public void setMasterPart(Part masterPart)
 	{
-		print("*** 2. setMasterPart ***");
-		print("* master part is " + masterPart.toString());
+		//print("*** 2. setMasterPart ***");
+		//print("* master part is " + masterPart.toString());
 		this.masterPart = masterPart;
 	}
 

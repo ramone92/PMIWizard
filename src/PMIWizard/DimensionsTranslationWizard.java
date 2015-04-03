@@ -27,7 +27,7 @@ public class DimensionsTranslationWizard extends PMITranslationWizard
 	{
 		print("*** 3. DimensionsTranslationWizard created ***");
 		//getMasterDimensions();
-		setMasterDimensionsTree(masterDimensionsTree);
+		//setMasterDimensionsTree(getPmiWizardDialog().getMasterDimensionsTree());
 		//test();
 	}
 	
@@ -85,7 +85,19 @@ public class DimensionsTranslationWizard extends PMITranslationWizard
 			{
 				taggedObject = it.next();				
 				pmi = (Pmi) taggedObject;
-				print("*PMI object*: " + pmi.journalIdentifier());
+				print("*******************");
+				Annotation an = pmi.getDisplayInstances()[0];
+				print(an.getClass().getName());
+				print(an.getClass().getSimpleName());
+				
+				//--------------------
+//				getMasterDimensionsTree().insertColumn(0, "Имя объекта", 500);
+				//--------------------
+				if (an instanceof Dimension)
+				{
+					/*Node newNode = getMasterDimensionsTree().createNode(an.name());
+		    		getMasterDimensionsTree().insertNode(newNode, null, null, Tree.NodeInsertOption.LAST);*/       
+				}
 				AssociatedObject ao = pmi.getAssociatedObject();
 				DisplayableObject dispObjs[] = ao.getObjects();
 				for (DisplayableObject dispObject : dispObjs)
@@ -136,13 +148,13 @@ public class DimensionsTranslationWizard extends PMITranslationWizard
     //Getters and Setters
     //------------------------------------------------------------------------------
 	
-	public Tree getMasterDimensionsTree() throws RemoteException, NXException
+	public Tree getMasterDimensionsTree()
 	{
-		//super.print("getMasterDimensionsTree");
+		print("***getMasterDimensionsTree is null:" + (masterDimensionsTree == null));
 		return masterDimensionsTree;
 	}
 
-	public void setMasterDimensionsTree(Tree masterDimensionsTree) throws RemoteException, NXException
+	public void setMasterDimensionsTree(Tree masterDimensionsTree)
 	{
 		//super.print("setMasterDimensionsTree");
 		this.masterDimensionsTree = masterDimensionsTree;
