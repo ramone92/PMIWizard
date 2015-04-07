@@ -5,13 +5,11 @@ import java.io.StringWriter;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 
-import javax.swing.text.html.HTMLDocument.HTMLReader.IsindexAction;
-
 import nxopen.*;
 import nxopen.annotations.*;
 import nxopen.blockstyler.*;
 
-public class DimensionsTranslationWizard extends PMITranslationWizard
+public class DimensionsTranslationWizard extends PMITranslationWizard implements Tree.OnSelectCallback
 {
 
 	private Tree masterDimensionsTree;
@@ -23,11 +21,15 @@ public class DimensionsTranslationWizard extends PMITranslationWizard
     //------------------------------------------------------------------------------
 
     //This constructor invokes from PMITranslationWizard.callDimensionsTranslationWizard()
-	public DimensionsTranslationWizard() throws NXException, RemoteException
+	public DimensionsTranslationWizard(PMITranslationWizard pmitw) throws NXException, RemoteException
 	{
 		print("*** 3. DimensionsTranslationWizard created ***");
 		//getMasterDimensions();
-		//setMasterDimensionsTree(getPmiWizardDialog().getMasterDimensionsTree());
+		setMasterPart(pmitw.getMasterPart());
+		
+		Tree masterTree = pmitw.getPmiWizardDialog().getMasterDimensionsTree();
+		masterTree.setOnSelectHandler(this);
+		setMasterDimensionsTree(masterTree);				
 		//test();
 	}
 	
@@ -72,7 +74,7 @@ public class DimensionsTranslationWizard extends PMITranslationWizard
 	{
 		try
 		{
-			print("---------------start of test function---------------");
+			print("\n---------------start of test function---------------\n");
 			
 			AnnotationManager annotationManager = getMasterPart().annotations();
 			PmiManager pmiManager = getMasterPart().pmiManager();
@@ -81,6 +83,9 @@ public class DimensionsTranslationWizard extends PMITranslationWizard
 			TaggedObjectCollection.Iterator it = pmiCollection.iterator();
 			Object taggedObject;
 			Pmi pmi;
+			
+			getMasterDimensionsTree().insertColumn(0, "Имя объекта", 500);
+			
 			while(it.hasNext())
 			{
 				taggedObject = it.next();				
@@ -90,13 +95,10 @@ public class DimensionsTranslationWizard extends PMITranslationWizard
 				print(an.getClass().getName());
 				print(an.getClass().getSimpleName());
 				
-				//--------------------
-//				getMasterDimensionsTree().insertColumn(0, "Имя объекта", 500);
-				//--------------------
 				if (an instanceof Dimension)
 				{
-					/*Node newNode = getMasterDimensionsTree().createNode(an.name());
-		    		getMasterDimensionsTree().insertNode(newNode, null, null, Tree.NodeInsertOption.LAST);*/       
+					Node newNode = getMasterDimensionsTree().createNode(an.journalIdentifier());
+		    		getMasterDimensionsTree().insertNode(newNode, null, null, Tree.NodeInsertOption.LAST);       
 				}
 				AssociatedObject ao = pmi.getAssociatedObject();
 				DisplayableObject dispObjs[] = ao.getObjects();
@@ -112,7 +114,7 @@ public class DimensionsTranslationWizard extends PMITranslationWizard
             PrintWriter p = new PrintWriter(s);
             p.println("Caught exception " + ex );
             ex.printStackTrace(p);
-            getTheUFSession().ui().writeListingWindow("\nFailed");
+            getTheUFSession().ui().writeListingWindow("\n***Failed***");
             getTheUFSession().ui().writeListingWindow("\n"+ex.getMessage());
             getTheUFSession().ui().writeListingWindow("\n"+s.getBuffer().toString());		
 		}
@@ -150,13 +152,13 @@ public class DimensionsTranslationWizard extends PMITranslationWizard
 	
 	public Tree getMasterDimensionsTree()
 	{
-		print("***getMasterDimensionsTree is null:" + (masterDimensionsTree == null));
+		//print("***getMasterDimensionsTree is null:" + (masterDimensionsTree == null));
 		return masterDimensionsTree;
 	}
 
 	public void setMasterDimensionsTree(Tree masterDimensionsTree)
 	{
-		//super.print("setMasterDimensionsTree");
+		//print("setMasterDimensionsTree");
 		this.masterDimensionsTree = masterDimensionsTree;
 	}
 
@@ -175,10 +177,19 @@ public class DimensionsTranslationWizard extends PMITranslationWizard
 		return masterDimensionsTypesList;
 	}
 
-	public void setMasterDimensionsTypesList(
-			ArrayList<String> masterDimensionsTypeList)
+	public void setMasterDimensionsTypesList(ArrayList<String> masterDimensionsTypeList)
 	{
 		this.masterDimensionsTypesList = masterDimensionsTypeList;
+	}
+
+	@Override
+	public void onSelectCallback(Tree tree, Node node, int columnID, boolean selected) throws NXException, RemoteException
+	{
+		if (selected)
+    	{
+    		getTheUFSession().ui().openListingWindow();
+    		getTheUFSession().ui().writeListingWindow(tree.name() + "/" + node.toString() + "/" + columnID + "/" + selected + "\n\n");
+    	}		
 	}
 
 }

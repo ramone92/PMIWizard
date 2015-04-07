@@ -77,19 +77,7 @@ public class PMITranslationWizard
 			getPmiWizardDialog().getTabMasterDimensions().setShow(true);
 			if (getDimensionsTranslationWizard() == null)
 			{
-				DimensionsTranslationWizard dtw = new DimensionsTranslationWizard();
-				dtw.setMasterPart(masterPart);
-				getPmiWizardDialog().getMasterDimensionsTree().insertColumn(0, "Имя объекта", 500);
-		
-				//-------------
-				for (int i = 0; i < 5; i++)
-				{
-					Node newNode = getPmiWizardDialog().getMasterDimensionsTree().createNode("" + i);
-					getPmiWizardDialog().getMasterDimensionsTree().insertNode(newNode, null, null, Tree.NodeInsertOption.LAST);
-				}
-				//-------------
-				
-				dtw.setMasterDimensionsTree(getPmiWizardDialog().getMasterDimensionsTree());
+				DimensionsTranslationWizard dtw = new DimensionsTranslationWizard(this);
 				dtw.test();
 				setDimensionsTranslationWizard(dtw);
 			}
