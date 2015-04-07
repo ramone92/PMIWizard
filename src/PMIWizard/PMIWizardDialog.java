@@ -192,7 +192,7 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
     //------------------------------------------------------------------------------
     public static final int getUnloadOption() throws RemoteException, NXException
     {    	
-    	getPMITranslationWizard().print("***getUnloadOption***");
+    	//getPMITranslationWizard().print("***getUnloadOption***");
     	getPMITranslationWizard().closeMasterPart();
     	return BaseSession.LibraryUnloadOption.IMMEDIATELY;        
     }
@@ -354,7 +354,7 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
         try
         {
         	PMITranslationWizard pmiTW = getPMITranslationWizard();
-        	pmiTW.activate();
+        	pmiTW.activate();        	
         }
         catch(Exception ex)
         {

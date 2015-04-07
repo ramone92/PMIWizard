@@ -1,5 +1,7 @@
 package PMIWizard;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.rmi.RemoteException;
 
 import nxopen.*;
@@ -74,10 +76,26 @@ public class PMITranslationWizard
 			//print("callDimensionsTranslationWizard");			
 			getPmiWizardDialog().getTabMasterDimensions().setShow(true);
 			if (getDimensionsTranslationWizard() == null)
-				setDimensionsTranslationWizard(new DimensionsTranslationWizard(getPmiWizardDialog().getMasterDimensionsTree()));	
-			
-			getDimensionsTranslationWizard().fillTree();
-			
+			{
+				DimensionsTranslationWizard dtw = new DimensionsTranslationWizard();
+				dtw.setMasterPart(masterPart);
+				getPmiWizardDialog().getMasterDimensionsTree().insertColumn(0, "Имя объекта", 500);
+		
+				//-------------
+				for (int i = 0; i < 5; i++)
+				{
+					Node newNode = getPmiWizardDialog().getMasterDimensionsTree().createNode("" + i);
+					getPmiWizardDialog().getMasterDimensionsTree().insertNode(newNode, null, null, Tree.NodeInsertOption.LAST);
+				}
+				//-------------
+				
+				dtw.setMasterDimensionsTree(getPmiWizardDialog().getMasterDimensionsTree());
+				dtw.test();
+				setDimensionsTranslationWizard(dtw);
+			}
+				
+			//setDimensionsTranslationWizard(new DimensionsTranslationWizard(getPmiWizardDialog().getMasterDimensionsTree()));	
+			//getDimensionsTranslationWizard().fillTree();			
 		}
 		else
 		{
@@ -111,9 +129,8 @@ public class PMITranslationWizard
 	{
 		setCurrentWizardStep(getPmiWizardDialog().getWizard().currentStep());
 		
-		theUFSession.ui().openListingWindow();
-    	theUFSession.ui().writeListingWindow("currentWizardStep = " + getCurrentWizardStep() + "\n");
-    	
+		print("*** currentWizardStep = " + getCurrentWizardStep());
+		
 		switch (getCurrentWizardStep())
 		{
 		case 0:
@@ -143,30 +160,33 @@ public class PMITranslationWizard
     //------------------------------------------------------------------------------
 	public void openMasterPart() throws RemoteException, NXException
 	{
+		print("*** 1. Opening master part ***");
+		
 		if (getMasterPart() != null)
 		{
 			print("Master part is already opened");
 			return;
 		}
-			
-		Part part;
-		String partPath = getPmiWizardDialog().getPartFileBrowser().path(); 
 		
-		if (partPath.isEmpty())
+		Part part;
+		String partPath = getPmiWizardDialog().getPartFileBrowser().path();
+		/*if (partPath.isEmpty())
 		{
 			print("Part path is empty");
 			return;
 		}
+		else
+		{
+			print("Path is " + partPath);
+		}*/
 		
-		print("Opening master part");
-	
 		PartCollection.OpenBaseData openBaseData = getTheSession().parts().openBase(partPath);
 		part = (Part) openBaseData.part;
 		setMasterPart(part);
 		
 		openBaseData.loadStatus.dispose();
 	    openBaseData.loadStatus = null;
-		
+			
 	}
 	
 	//------------------------------------------------------------------------------
@@ -174,20 +194,28 @@ public class PMITranslationWizard
     //------------------------------------------------------------------------------
 	public void closeMasterPart() throws RemoteException, NXException
 	{
-		print("Closing master part");
+		//print("Closing master part");
 		((BasePart)getMasterPart()).close(BasePart.CloseWholeTree.TRUE, BasePart.CloseModified.CLOSE_MODIFIED, null);		
 	}
 	
 	//------------------------------------------------------------------------------
     // This method opens listing window and print string from message parameter
     //------------------------------------------------------------------------------
-	public void print(String message) throws RemoteException, NXException
+	public void print(String message)
 	{
-		if (!getTheUFSession().ui().isListingWindowOpen())
-			getTheUFSession().ui().openListingWindow();
+		try
+		{
+			if (!getTheUFSession().ui().isListingWindowOpen())
+				getTheUFSession().ui().openListingWindow();
 			
-		getTheUFSession().ui().writeListingWindow(message);
-		getTheUFSession().ui().writeListingWindow("\n");
+			getTheUFSession().ui().writeListingWindow(message);
+			getTheUFSession().ui().writeListingWindow("\n");
+			
+		} catch (RemoteException | NXException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 	}
 	
@@ -217,11 +245,16 @@ public class PMITranslationWizard
 
 	public Part getMasterPart()
 	{
+		//print("*** 4. getMasterPart *** is null = " + (masterPart == null));
+		//if (masterPart != null)
+			//print("* master part is " + masterPart.toString());
 		return masterPart;
 	}
 
 	public void setMasterPart(Part masterPart)
 	{
+		//print("*** 2. setMasterPart ***");
+		//print("* master part is " + masterPart.toString());
 		this.masterPart = masterPart;
 	}
 
