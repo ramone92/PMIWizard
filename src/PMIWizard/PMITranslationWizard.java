@@ -75,12 +75,13 @@ public class PMITranslationWizard
 		{
 			//print("callDimensionsTranslationWizard");			
 			getPmiWizardDialog().getTabMasterDimensions().setShow(true);
-			if (getDimensionsTranslationWizard() == null)
+			DimensionsTranslationWizard dtw = getDimensionsTranslationWizard();
+			if (dtw == null)
 			{
-				DimensionsTranslationWizard dtw = new DimensionsTranslationWizard(this);
-				dtw.test();
+				dtw = new DimensionsTranslationWizard(this);
 				setDimensionsTranslationWizard(dtw);
 			}
+			dtw.test();
 				
 			//setDimensionsTranslationWizard(new DimensionsTranslationWizard(getPmiWizardDialog().getMasterDimensionsTree()));	
 			//getDimensionsTranslationWizard().fillTree();			

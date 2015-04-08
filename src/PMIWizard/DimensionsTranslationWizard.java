@@ -84,7 +84,7 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 			Object taggedObject;
 			Pmi pmi;
 			
-			getMasterDimensionsTree().insertColumn(0, "Имя объекта", 500);
+			getMasterDimensionsTree().insertColumn(0, "Dimension", 500);
 			
 			while(it.hasNext())
 			{
@@ -92,12 +92,20 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 				pmi = (Pmi) taggedObject;
 				print("*******************");
 				Annotation an = pmi.getDisplayInstances()[0];
-				print(an.getClass().getName());
-				print(an.getClass().getSimpleName());
+		
+				String className;			
+				String nodeText;
+				
+				Dimension dim;
 				
 				if (an instanceof Dimension)
 				{
-					Node newNode = getMasterDimensionsTree().createNode(an.journalIdentifier());
+					dim = (Dimension) an;
+					
+					className = an.getClass().getSimpleName();
+					nodeText = className + ": " + dim.computedSize();
+					
+					Node newNode = getMasterDimensionsTree().createNode(nodeText);
 		    		getMasterDimensionsTree().insertNode(newNode, null, null, Tree.NodeInsertOption.LAST);       
 				}
 				AssociatedObject ao = pmi.getAssociatedObject();
@@ -187,8 +195,7 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 	{
 		if (selected)
     	{
-    		getTheUFSession().ui().openListingWindow();
-    		getTheUFSession().ui().writeListingWindow(tree.name() + "/" + node.toString() + "/" + columnID + "/" + selected + "\n\n");
+    		print(node.displayText());
     	}		
 	}
 
