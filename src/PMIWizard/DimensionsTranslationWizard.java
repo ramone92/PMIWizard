@@ -139,7 +139,6 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 	{
 		try
 		{
-			//TODO Check if curve selected
 			if (getPmiWizardDialog().getDimensionEdgeSelect().getSelectedObjects().length == 0)
 			{
 				showMessage("Информация", NXMessageBox.DialogType.INFORMATION, "Укажите ребро или грань");
@@ -153,12 +152,15 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 			}
 			
 			print("Starting dimension translation...");
+			
+			//TODO
+			// Make dimension creation
+			
 			// Clear selection
 			getPmiWizardDialog().getDimensionEdgeSelect().setSelectedObjects(new TaggedObject[0]);
 		} 
 		catch (RemoteException | NXException e)
 		{
-			// TODO Автоматически созданный блок catch
 			e.printStackTrace();
 		}
 		
