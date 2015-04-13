@@ -25,6 +25,8 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 	{
 		print("*** 3. DimensionsTranslationWizard created ***");
 		//getMasterDimensions();
+		setPmiWizardDialog(pmitw.getPmiWizardDialog());
+		
 		setMasterPart(pmitw.getMasterPart());
 		
 		Tree masterTree = pmitw.getPmiWizardDialog().getMasterDimensionsTree();
@@ -109,7 +111,7 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 		    		getMasterDimensionsTree().insertNode(newNode, null, null, Tree.NodeInsertOption.LAST);       
 				}
 				AssociatedObject ao = pmi.getAssociatedObject();
-				DisplayableObject dispObjs[] = ao.getObjects();
+				DisplayableObject[] dispObjs = ao.getObjects();
 				for (DisplayableObject dispObject : dispObjs)
 				{
 					print(dispObject.journalIdentifier());
@@ -132,6 +134,35 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 	//------------------------------------------------------------------------------
     // Public methods
     //------------------------------------------------------------------------------
+	
+	public void translate()
+	{
+		try
+		{
+			//TODO Check if curve selected
+			if (getPmiWizardDialog().getDimensionEdgeSelect().getSelectedObjects().length == 0)
+			{
+				showMessage("Информация", NXMessageBox.DialogType.INFORMATION, "Укажите ребро или грань");
+				return;
+			}
+
+			if (getMasterDimensionsTree().getSelectedNodes().length == 0)
+			{
+				showMessage("Информация", NXMessageBox.DialogType.INFORMATION, "Выберите размер для трансляции");
+				return;								
+			}
+			
+			print("Starting dimension translation...");
+			// Clear selection
+			getPmiWizardDialog().getDimensionEdgeSelect().setSelectedObjects(new TaggedObject[0]);
+		} 
+		catch (RemoteException | NXException e)
+		{
+			// TODO Автоматически созданный блок catch
+			e.printStackTrace();
+		}
+		
+	}
 	
 	public void fillTree() throws RemoteException, NXException
 	{
@@ -193,10 +224,10 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 	@Override
 	public void onSelectCallback(Tree tree, Node node, int columnID, boolean selected) throws NXException, RemoteException
 	{
-		if (selected)
+		/*if (selected)
     	{
-    		print(node.displayText());
-    	}		
+    		print(node.displayText());    		
+    	}*/		
 	}
 
 }

@@ -51,7 +51,7 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
 //,Tree.OnInsertNodeCallback
 //,Tree.OnPreSelectCallback
 //,Tree.OnDeleteNodeCallback
-,Tree.OnSelectCallback
+//,Tree.OnSelectCallback
 //,Tree.OnStateChangeCallback
 //,Tree.ToolTipTextCallback
 //,Tree.ColumnSortCallback
@@ -93,11 +93,57 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
 	private nxopen.blockstyler.Tree masterAnnotationsTree;// Block type: Tree Control
     private nxopen.blockstyler.Group tabMasterDimensions;// Block type: Group
     private nxopen.blockstyler.Tree masterDimensionsTree;// Block type: Tree Control
+    private nxopen.blockstyler.CurveCollector dimensionEdgeSelect;// Block type: Curve Collector
+    private nxopen.blockstyler.Button translateDimensionButton;// Block type: Button
     private nxopen.blockstyler.Group tabMasterFaceFinishes;// Block type: Group
     private nxopen.blockstyler.Tree masterFaceFinishesTree;// Block type: Tree Control
+    private nxopen.blockstyler.FaceCollector faceFinishFaceSelect;// Block type: Face Collector
     
-    private static PMITranslationWizard pmiTranslationWizard; 
+    //------------------------------------------------------------------------------
+    //Bit Option for Property: EntityType
+    //------------------------------------------------------------------------------
+    public static final int                          EntityType_AllowEdges = (1 << 0);
+    public static final int                         EntityType_AllowCurves = (1 << 2);
+    public static final int                          EntityType_AllowPoint = (1 << 3);
+    public static final int                          EntityType_AllowFaces = (1 << 4);
+    public static final int                         EntityType_AllowDatums = (1 << 5);
+    public static final int                         EntityType_AllowBodies = (1 << 6);
+    //------------------------------------------------------------------------------
+    //Bit Option for Property: CurveRules
+    //------------------------------------------------------------------------------
+    public static final int                         CurveRules_SingleCurve = (1 << 0);
+    public static final int                     CurveRules_ConnectedCurves = (1 << 1);
+    public static final int                       CurveRules_TangentCurves = (1 << 2);
+    public static final int                           CurveRules_FaceEdges = (1 << 3);
+    public static final int                           CurveRules_BodyEdges = (1 << 4);
+    public static final int                          CurveRules_SheetEdges = (1 << 5);
+    public static final int                       CurveRules_FeatureCurves = (1 << 6);
+    public static final int                         CurveRules_VertexEdges = (1 << 8);
+    public static final int                  CurveRules_VertexTangentEdges = (1 << 9);
+    public static final int                CurveRules_RegionBoundaryCurves = (1 <<11);
+    public static final int                   CurveRules_OuterEdgesofFaces = (1 <<13);
+    public static final int                     CurveRules_RibTopFaceEdges = (1 <<14);
+    //------------------------------------------------------------------------------
+    //Bit Option for Property: FaceRules
+    //------------------------------------------------------------------------------
+    public static final int                           FaceRules_SingleFace = (1 << 0);
+    public static final int                          FaceRules_RegionFaces = (1 << 1);
+    public static final int                         FaceRules_TangentFaces = (1 << 2);
+    public static final int                   FaceRules_TangentRegionFaces = (1 << 3);
+    public static final int                            FaceRules_BodyFaces = (1 << 4);
+    public static final int                         FaceRules_FeatureFaces = (1 << 5);
+    public static final int                        FaceRules_AdjacentFaces = (1 << 6);
+    public static final int                  FaceRules_ConnectedBlendFaces = (1 << 7);
+    public static final int                        FaceRules_AllBlendFaces = (1 << 8);
+    public static final int                             FaceRules_RibFaces = (1 << 9);
+    public static final int                            FaceRules_SlotFaces = (1 <<10);
+    public static final int                   FaceRules_BossandPocketFaces = (1 <<11);
+    public static final int                       FaceRules_MergedRibFaces = (1 <<12);
+    public static final int                  FaceRules_RegionBoundaryFaces = (1 <<13);
+    public static final int                 FaceRules_FaceandAdjacentFaces = (1 <<14);
         
+    private static PMITranslationWizard pmiTranslationWizard; 
+    
     //------------------------------------------------------------------------------
     //Constructor for NX Styler class
     //------------------------------------------------------------------------------
@@ -273,6 +319,10 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
             masterAnnotationsTree = (nxopen.blockstyler.Tree)theDialog.topBlock().findBlock("masterAnnotationsTree");            
             masterDimensionsTree = (nxopen.blockstyler.Tree)theDialog.topBlock().findBlock("masterDimensionsTree");            
             masterFaceFinishesTree = (nxopen.blockstyler.Tree)theDialog.topBlock().findBlock("masterFaceFinishesTree");
+            
+            dimensionEdgeSelect = (nxopen.blockstyler.CurveCollector)theDialog.topBlock().findBlock("dimensionEdgeSelect");
+            translateDimensionButton = (nxopen.blockstyler.Button)theDialog.topBlock().findBlock("translateDimensionButton");
+            faceFinishFaceSelect = (nxopen.blockstyler.FaceCollector)theDialog.topBlock().findBlock("faceFinishFaceSelect");
             //------------------------------------------------------------------------------
             //Registration of Treelist specific callbacks
             //------------------------------------------------------------------------------
@@ -418,7 +468,21 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
             {
             //---------Enter your code here-----------
             }
+            else if(block == dimensionEdgeSelect)
+            {
+            //---------Enter your code here-----------
+            }
+            else if(block == translateDimensionButton)
+            {
+            //---------Enter your code here-----------
+            	getPMITranslationWizard().getDimensionsTranslationWizard().translate();
+            }
+            else if(block == faceFinishFaceSelect)
+            {
+            //---------Enter your code here-----------
+            }
         }
+             
         catch(Exception ex)
         {
             //---- Enter your exception handling code here -----
@@ -469,14 +533,14 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
     //{
     //}
     
-    public void onSelectCallback(Tree tree, Node node, int columnID, boolean selected) throws NXException, RemoteException
+    /*public void onSelectCallback(Tree tree, Node node, int columnID, boolean selected) throws NXException, RemoteException
     {
     	if (selected)
     	{
     		theUFSession.ui().openListingWindow();
     		theUFSession.ui().writeListingWindow(tree.name() + "/" + node.toString() + "/" + columnID + "/" + selected + "\n\n");
     	}	    
-    }
+    }*/
     
     //public void onStateChangeCallback(Tree tree, Node node, int columnID)throws NXException, RemoteException
     //{
@@ -759,6 +823,33 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
 	public void setMasterFaceFinishesTree(nxopen.blockstyler.Tree masterFaceFinishes)
 	{
 		this.masterFaceFinishesTree = masterFaceFinishes;
+	}
+	public nxopen.blockstyler.CurveCollector getDimensionEdgeSelect()
+	{
+		return dimensionEdgeSelect;
+	}
+	public void setDimensionEdgeSelect(
+			nxopen.blockstyler.CurveCollector dimensionEdgeSelect)
+	{
+		this.dimensionEdgeSelect = dimensionEdgeSelect;
+	}
+	public nxopen.blockstyler.Button getTranslateDimensionButton()
+	{
+		return translateDimensionButton;
+	}
+	public void setTranslateDimensionButton(
+			nxopen.blockstyler.Button translateDimensionButton)
+	{
+		this.translateDimensionButton = translateDimensionButton;
+	}
+	public nxopen.blockstyler.FaceCollector getFaceFinishFaceSelect()
+	{
+		return faceFinishFaceSelect;
+	}
+	public void setFaceFinishFaceSelect(
+			nxopen.blockstyler.FaceCollector faceFinishFaceSelect)
+	{
+		this.faceFinishFaceSelect = faceFinishFaceSelect;
 	}
     
 }

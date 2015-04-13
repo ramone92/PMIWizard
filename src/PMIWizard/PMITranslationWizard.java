@@ -11,6 +11,7 @@ public class PMITranslationWizard
 {
 	private Session theSession;
 	private UFSession theUFSession;
+	private UI theUI ;
 	
 	private Part masterPart;
 	
@@ -29,7 +30,8 @@ public class PMITranslationWizard
 	{
 		// Session settings		
 		setTheSession((Session)SessionFactory.get("Session"));
-        setTheUFSession((UFSession)SessionFactory.get("UFSession"));		
+        setTheUFSession((UFSession)SessionFactory.get("UFSession"));
+        setTheUI((UI)SessionFactory.get("UI"));
 	}
 	
 	public PMITranslationWizard(PMIWizardDialog wizard) throws NXException, RemoteException
@@ -208,6 +210,19 @@ public class PMITranslationWizard
 		
 	}
 	
+	public void showMessage(String title, NXMessageBox.DialogType dialogType, String message)
+	{
+		try
+		{
+			getTheUI().nxmessageBox().show(title, dialogType, message);
+			
+		} catch (RemoteException | NXException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+	}
+	
 	//------------------------------------------------------------------------------
     //Getters and Setters
     //------------------------------------------------------------------------------
@@ -230,6 +245,16 @@ public class PMITranslationWizard
 	public void setTheUFSession(UFSession theUFSession)
 	{
 		this.theUFSession = theUFSession;
+	}
+
+	public UI getTheUI()
+	{
+		return theUI;
+	}
+
+	public void setTheUI(UI theUI)
+	{
+		this.theUI = theUI;
 	}
 
 	public Part getMasterPart()
