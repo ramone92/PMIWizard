@@ -146,7 +146,7 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 		    associativity1.setFirstObject(edge1);
 		    
 		    NXObject nullNXObject = null;
-		    associativity1.setSecondObject(nullNXObject);
+		    associativity1.setSecondObject(null);
 		    
 		    associativity1.setObjectView(getWorkPart().modelingViews().workView());
 		    
@@ -177,7 +177,7 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 		    
 		    associativity3.setFirstObject(edge1);
 		    
-		    associativity3.setSecondObject(nullNXObject);
+		    associativity3.setSecondObject(null);
 		    
 		    associativity3.setObjectView(getWorkPart().modelingViews().workView());
 		    
@@ -297,16 +297,16 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 		    nxopen.annotations.AppendedText appendedText1;
 		    appendedText1 = getWorkPart().annotations().newAppendedText();
 		    
-		    String [] lines1  = new String[0];
+		    String[] lines1  = new String[0];
 		    appendedText1.setAboveText(lines1);
 		    
-		    String [] lines2  = new String[0];
+		    String[] lines2  = new String[0];
 		    appendedText1.setAfterText(lines2);
 		    
-		    String [] lines3  = new String[0];
+		    String[] lines3  = new String[0];
 		    appendedText1.setBeforeText(lines3);
 		    
-		    String [] lines4  = new String[0];
+		    String[] lines4  = new String[0];
 		    appendedText1.setBelowText(lines4);
 		    
 		    dimensionData1.setAppendedText(appendedText1);
@@ -317,9 +317,9 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 		    nxopen.annotations.PmiData pmiData1;
 		    pmiData1 = getWorkPart().annotations().newPmiData();
 		    
-		    nxopen.annotations.BusinessModifier [] businessModifiers1  = new nxopen.annotations.BusinessModifier[0];
+		    /*nxopen.annotations.BusinessModifier [] businessModifiers1  = new nxopen.annotations.BusinessModifier[0];
 		    pmiData1.setBusinessModifiers(businessModifiers1);
-		    
+		    */
 		    Xform xform3;
 		    xform3 = dimensionData1.getInferredPlane(nxopen.annotations.PmiDefaultPlane.YZ_OF_WCS, nxopen.annotations.DimensionType.VERTICAL);
 		    
@@ -335,7 +335,8 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 		   
 		    pmiVerticalDimension1.setOriginCentered(true);
 		    
-		    Point3d origin2 = new Point3d(100.0, -315.991663808061, 50.0);
+		    // Dimension distance from part 
+		    Point3d origin2 = new Point3d(100.0, -100.0, 50.0);
 		    pmiVerticalDimension1.setAnnotationOrigin(origin2);
 		    
 		    pmiVerticalDimension1.setLeaderOrientation(nxopen.annotations.LeaderOrientation.FROM_LEFT);
