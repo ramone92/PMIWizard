@@ -14,6 +14,7 @@ public class PMITranslationWizard
 	private UI theUI ;
 	
 	private Part masterPart;
+	private Part workPart;
 	
 	private PMIWizardDialog pmiWizardDialog;
 	private AnnotationsTranslationWizard annotationsTranslationWizard;
@@ -40,6 +41,7 @@ public class PMITranslationWizard
 				
 		// Initial settings
 		setPmiWizardDialog(wizard);
+		setWorkPart(getTheSession().parts().work());
 		
 		//TODO to be written		
 
@@ -270,6 +272,16 @@ public class PMITranslationWizard
 		//print("*** 2. setMasterPart ***");
 		//print("* master part is " + masterPart.toString());
 		this.masterPart = masterPart;
+	}
+
+	public Part getWorkPart()
+	{
+		return workPart;
+	}
+
+	public void setWorkPart(Part workPart)
+	{
+		this.workPart = workPart;
 	}
 
 	public PMIWizardDialog getPmiWizardDialog()
