@@ -85,7 +85,7 @@ public class PMITranslationWizard
 				dtw = new DimensionsTranslationWizard(this);
 				setDimensionsTranslationWizard(dtw);
 			}
-			dtw.test();
+			dtw.run();
 				
 			//setDimensionsTranslationWizard(new DimensionsTranslationWizard(getPmiWizardDialog().getMasterDimensionsTree()));	
 			//getDimensionsTranslationWizard().fillTree();			
@@ -194,7 +194,7 @@ public class PMITranslationWizard
 	//------------------------------------------------------------------------------
     // This method opens listing window and print string from message parameter
     //------------------------------------------------------------------------------
-	public void print(String message)
+	protected void print(String message)
 	{
 		try
 		{
@@ -212,7 +212,7 @@ public class PMITranslationWizard
 		
 	}
 	
-	public void showMessage(String title, NXMessageBox.DialogType dialogType, String message)
+	protected void showMessage(String title, NXMessageBox.DialogType dialogType, String message)
 	{
 		try
 		{
@@ -223,6 +223,18 @@ public class PMITranslationWizard
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}		
+	}
+	
+	protected void catchException(Exception ex) throws RemoteException, NXException
+	{
+		StringWriter s = new StringWriter();
+        PrintWriter p = new PrintWriter(s);
+        p.println("Caught exception " + ex );
+        ex.printStackTrace(p);
+        print("\n***Failed***");
+        print("\n"+ex.getMessage());
+        print("\n"+s.getBuffer().toString());
+		
 	}
 	
 	//------------------------------------------------------------------------------
