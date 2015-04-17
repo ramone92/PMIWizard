@@ -121,8 +121,7 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 	
 	private void createDimension() throws RemoteException, NXException
 	{
-		String dimensionName = getMasterDimensionsTree().getSelectedNodes()[0].displayText();
-		dimensionName = dimensionName.split("_")[0];
+		String dimensionName = getMasterDimensionsTree().getSelectedNodes()[0].displayText().split("_")[0];
 		print("dimensionName = " + dimensionName);
 		switch (dimensionName)
 		{
@@ -132,6 +131,10 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 			
 		case "PmiHorizontalDimension":
 			createHorizontalDimension();			
+			break;
+			
+		case "PmiDiameterDimension":
+			createDiameterDimension();			
 			break;	
 
 		default:
@@ -344,8 +347,8 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 		    xform3 = dimensionData1.getInferredPlane(pmiDefaultPlane, nxopen.annotations.DimensionType.VERTICAL);
 		    
 		    Point3d origin1 = new Point3d(0.0, 0.0, 0.0);
-		    nxopen.annotations.PmiVerticalDimension pmiVerticalDimension1;
-		    pmiVerticalDimension1 = getWorkPart().dimensions().createPmiVerticalDimension(dimensionData1, pmiData1, xform3, origin1);
+		    nxopen.annotations.PmiVerticalDimension pmiVerticalDimension;
+		    pmiVerticalDimension = getWorkPart().dimensions().createPmiVerticalDimension(dimensionData1, pmiData1, xform3, origin1);
 		    
 		    dimensionData1.dispose();
 		    dimensionData1 = null;
@@ -353,7 +356,7 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 		    pmiData1.dispose();
 		    pmiData1 = null;
 		   
-		    pmiVerticalDimension1.setOriginCentered(true);
+		    pmiVerticalDimension.setOriginCentered(true);
 		    
 		    // Dimension distance from part 
 		    Point3d distancePoint = new Point3d(0.0, 0.0, 0.0);
@@ -374,9 +377,9 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 			}
 		    //Point3d origin2 = new Point3d(100.0, -100.0, 50.0);
 		    Point3d origin2 = distancePoint;
-		    pmiVerticalDimension1.setAnnotationOrigin(origin2);
+		    pmiVerticalDimension.setAnnotationOrigin(origin2);
 		    
-		    pmiVerticalDimension1.setLeaderOrientation(nxopen.annotations.LeaderOrientation.FROM_LEFT);
+		    pmiVerticalDimension.setLeaderOrientation(nxopen.annotations.LeaderOrientation.FROM_LEFT);
 		    
 		}
 		catch (NXException ex)
@@ -589,8 +592,8 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 		    xform3 = dimensionData1.getInferredPlane(pmiDefaultPlane, nxopen.annotations.DimensionType.VERTICAL);
 		    
 		    Point3d origin1 = new Point3d(0.0, 0.0, 0.0);
-		    nxopen.annotations.PmiHorizontalDimension pmiHorizontalDimension1;
-		    pmiHorizontalDimension1 = getWorkPart().dimensions().createPmiHorizontalDimension(dimensionData1, pmiData1, xform3, origin1);
+		    nxopen.annotations.PmiHorizontalDimension pmiHorizontalDimension;
+		    pmiHorizontalDimension = getWorkPart().dimensions().createPmiHorizontalDimension(dimensionData1, pmiData1, xform3, origin1);
 		    
 		    dimensionData1.dispose();
 		    dimensionData1 = null;
@@ -598,7 +601,7 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 		    pmiData1.dispose();
 		    pmiData1 = null;
 		   
-		    pmiHorizontalDimension1.setOriginCentered(true);
+		    pmiHorizontalDimension.setOriginCentered(true);
 		    
 		    // Dimension distance from part 
 		    Point3d distancePoint = new Point3d(0.0, 0.0, 0.0);
@@ -619,9 +622,254 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 			}
 		    //Point3d origin2 = new Point3d(100.0, -100.0, 50.0);
 		    Point3d origin2 = distancePoint;
-		    pmiHorizontalDimension1.setAnnotationOrigin(origin2);
+		    pmiHorizontalDimension.setAnnotationOrigin(origin2);
 		    
-		    pmiHorizontalDimension1.setLeaderOrientation(nxopen.annotations.LeaderOrientation.FROM_LEFT);
+		    pmiHorizontalDimension.setLeaderOrientation(nxopen.annotations.LeaderOrientation.FROM_LEFT);
+		    
+		}
+		catch (NXException ex)
+		{
+			catchException(ex);
+		}
+	}
+	
+	private void createDiameterDimension() throws RemoteException, NXException
+	{
+		print("createDiameterDimension");
+		try
+		{	
+			Dimension dim = getMasterDimensionsList().get(0);
+						
+			nxopen.annotations.DimensionData dimensionData1;
+		    dimensionData1 = getWorkPart().annotations().newDimensionData();
+		    
+		    nxopen.annotations.Associativity associativity1;
+		    associativity1 = getWorkPart().annotations().newAssociativity();
+		    
+		    //nxopen.features.Extrude extrude1 = ((nxopen.features.Extrude)getWorkPart().features().findObject("EXTRUDE(2)"));
+		    //Edge edge1 = ((Edge)extrude1.findObject("EDGE * 140 * 150 {(100,0,100)(100,0,50)(100,0,0) EXTRUDE(2)}"));
+		    Edge edge1 = (Edge) getPmiWizardDialog().getDimensionEdgeSelect().getSelectedObjects()[0];
+		    associativity1.setFirstObject(edge1);
+		    
+		    NXObject nullNXObject = null;
+		    associativity1.setSecondObject(null);
+		    
+		    Edge.VerticesData verticesData = edge1.getVertices();
+		    Point3d vertex1 = verticesData.vertex1;
+		    Point3d vertex2 = verticesData.vertex2;
+		    
+		    associativity1.setObjectView(getWorkPart().modelingViews().workView());
+		    
+		    associativity1.setPointOption(nxopen.annotations.AssociativityPointOption.CONTROL);
+		    
+		    associativity1.setLineOption(nxopen.annotations.AssociativityLineOption.NONE);
+		    
+		    Point3d firstDefinitionPoint1 = new Point3d(0.0, 0.0, 0.0);
+		    associativity1.setFirstDefinitionPoint(firstDefinitionPoint1);
+		    
+		    Point3d secondDefinitionPoint1 = new Point3d(0.0, 0.0, 0.0);
+		    associativity1.setSecondDefinitionPoint(secondDefinitionPoint1);
+		    
+		    associativity1.setAngle(0.0);
+		    
+		    //Point3d pickPoint1 = new Point3d(100.0, 0.0, 100.0);
+		    Point3d pickPoint1 = vertex1;
+		    associativity1.setPickPoint(pickPoint1);
+		    
+		    nxopen.annotations.Associativity [] associativity2  = new nxopen.annotations.Associativity[1];
+		    associativity2[0] = associativity1;
+		    dimensionData1.setAssociativity(1, associativity2);
+		    
+		    associativity1.dispose();
+		    associativity1 = null;
+		    
+		    nxopen.annotations.Associativity associativity3;
+		    associativity3 = getWorkPart().annotations().newAssociativity();
+		    
+		    associativity3.setFirstObject(edge1);
+		    
+		    associativity3.setSecondObject(null);
+		    
+		    associativity3.setObjectView(getWorkPart().modelingViews().workView());
+		    
+		    associativity3.setPointOption(nxopen.annotations.AssociativityPointOption.CONTROL);
+		    
+		    associativity3.setLineOption(nxopen.annotations.AssociativityLineOption.NONE);
+		    
+		    Point3d firstDefinitionPoint2 = new Point3d(0.0, 0.0, 0.0);
+		    associativity3.setFirstDefinitionPoint(firstDefinitionPoint2);
+		    
+		    Point3d secondDefinitionPoint2 = new Point3d(0.0, 0.0, 0.0);
+		    associativity3.setSecondDefinitionPoint(secondDefinitionPoint2);
+		    
+		    associativity3.setAngle(0.0);
+		    
+		    //Point3d pickPoint2 = new Point3d(100.0, 0.0, 0.0);
+		    Point3d pickPoint2 = vertex2;
+		    associativity3.setPickPoint(pickPoint2);
+		    
+		    nxopen.annotations.Associativity [] associativity4  = new nxopen.annotations.Associativity[1];
+		    associativity4[0] = associativity3;
+		    dimensionData1.setAssociativity(2, associativity4);
+		    
+		    associativity3.dispose();
+		    associativity3 = null;
+		    
+		    nxopen.annotations.DimensionPreferences dimensionPreferences1;
+		    dimensionPreferences1 = getWorkPart().annotations().preferences().getDimensionPreferences();
+		    
+		    nxopen.annotations.OrdinateDimensionPreferences ordinateDimensionPreferences1;
+		    ordinateDimensionPreferences1 = dimensionPreferences1.getOrdinateDimensionPreferences();
+		    
+		    ordinateDimensionPreferences1.dispose();
+		    ordinateDimensionPreferences1 = null;
+		    
+		    nxopen.annotations.ChamferDimensionPreferences chamferDimensionPreferences1;
+		    chamferDimensionPreferences1 = dimensionPreferences1.getChamferDimensionPreferences();
+		    
+		    chamferDimensionPreferences1.dispose();
+		    chamferDimensionPreferences1 = null;
+		    
+		    nxopen.annotations.NarrowDimensionPreferences narrowDimensionPreferences1;
+		    narrowDimensionPreferences1 = dimensionPreferences1.getNarrowDimensionPreferences();
+		    
+		    narrowDimensionPreferences1.dispose();
+		    narrowDimensionPreferences1 = null;
+		    
+		    nxopen.annotations.UnitsFormatPreferences unitsFormatPreferences1;
+		    unitsFormatPreferences1 = dimensionPreferences1.getUnitsFormatPreferences();
+		    
+		    unitsFormatPreferences1.dispose();
+		    unitsFormatPreferences1 = null;
+		    
+		    nxopen.annotations.DiameterRadiusPreferences diameterRadiusPreferences1;
+		    diameterRadiusPreferences1 = dimensionPreferences1.getDiameterRadiusPreferences();
+		    
+		    diameterRadiusPreferences1.dispose();
+		    diameterRadiusPreferences1 = null;
+		    
+		    dimensionData1.setDimensionPreferences(dimensionPreferences1);
+		    
+		    dimensionPreferences1.dispose();
+		    dimensionPreferences1 = null;
+		    
+		    nxopen.annotations.LineAndArrowPreferences lineAndArrowPreferences1;
+		    lineAndArrowPreferences1 = getWorkPart().annotations().preferences().getLineAndArrowPreferences();
+		    
+		    dimensionData1.setLineAndArrowPreferences(lineAndArrowPreferences1);
+		    
+		    lineAndArrowPreferences1.dispose();
+		    lineAndArrowPreferences1 = null;
+		    
+		    nxopen.annotations.LetteringPreferences letteringPreferences1;
+		    letteringPreferences1 = getWorkPart().annotations().preferences().getLetteringPreferences();
+		    
+		    dimensionData1.setLetteringPreferences(letteringPreferences1);
+		    
+		    letteringPreferences1.dispose();
+		    letteringPreferences1 = null;
+		    
+		    nxopen.annotations.UserSymbolPreferences userSymbolPreferences1;
+		    userSymbolPreferences1 = getWorkPart().annotations().newUserSymbolPreferences(nxopen.annotations.UserSymbolPreferences.SizeType.SCALE_ASPECT_RATIO, 1.0, 1.0);
+		    
+		    dimensionData1.setUserSymbolPreferences(userSymbolPreferences1);
+		    
+		    userSymbolPreferences1.dispose();
+		    userSymbolPreferences1 = null;
+		    
+		    nxopen.annotations.LinearTolerance linearTolerance1;
+		    linearTolerance1 = getWorkPart().annotations().preferences().getLinearTolerances();
+		    
+		    dimensionData1.setLinearTolerance(linearTolerance1);
+		    
+		    linearTolerance1.dispose();
+		    linearTolerance1 = null;
+		    
+		    nxopen.annotations.AngularTolerance angularTolerance1;
+		    angularTolerance1 = getWorkPart().annotations().preferences().getAngularTolerances();
+		    
+		    nxopen.annotations.Value lowerToleranceDegrees1 = new nxopen.annotations.Value();
+		    lowerToleranceDegrees1.itemValue = -0.1;
+		    Expression nullExpression = null;
+		    lowerToleranceDegrees1.valueExpression = nullExpression;
+		    lowerToleranceDegrees1.valuePrecision = 2;
+		    angularTolerance1.setLowerToleranceDegrees(lowerToleranceDegrees1);
+		    
+		    nxopen.annotations.Value upperToleranceDegrees1 = new nxopen.annotations.Value();
+		    upperToleranceDegrees1.itemValue = 0.1;
+		    upperToleranceDegrees1.valueExpression = nullExpression;
+		    upperToleranceDegrees1.valuePrecision = 2;
+		    angularTolerance1.setUpperToleranceDegrees(upperToleranceDegrees1);
+		    
+		    dimensionData1.setAngularTolerance(angularTolerance1);
+		    
+		    angularTolerance1.dispose();
+		    angularTolerance1 = null;
+		    
+		    nxopen.annotations.AppendedText appendedText1;
+		    appendedText1 = getWorkPart().annotations().newAppendedText();
+		    
+		    String[] lines1  = new String[0];
+		    appendedText1.setAboveText(lines1);
+		    
+		    String[] lines2  = new String[0];
+		    appendedText1.setAfterText(lines2);
+		    
+		    String[] lines3  = new String[0];
+		    appendedText1.setBeforeText(lines3);
+		    
+		    String[] lines4  = new String[0];
+		    appendedText1.setBelowText(lines4);
+		    
+		    dimensionData1.setAppendedText(appendedText1);
+		    
+		    appendedText1.dispose();
+		    appendedText1 = null;
+		    
+		    nxopen.annotations.PmiData pmiData1;
+		    pmiData1 = getWorkPart().annotations().newPmiData();
+		    
+		    /*nxopen.annotations.BusinessModifier [] businessModifiers1  = new nxopen.annotations.BusinessModifier[0];
+		    pmiData1.setBusinessModifiers(businessModifiers1);
+		    */
+		    Xform xform3;
+		    PmiDefaultPlane pmiDefaultPlane = PmiDefaultPlane.YZ_OF_WCS;
+		    xform3 = dimensionData1.getInferredPlane(pmiDefaultPlane, nxopen.annotations.DimensionType.VERTICAL);
+		    
+		    Point3d origin1 = new Point3d(0.0, 0.0, 0.0);
+		    nxopen.annotations.PmiDiameterDimension pmiDiameterDimension;
+		    pmiDiameterDimension = getWorkPart().dimensions().createPmiDiameterDimension(dimensionData1, pmiData1, xform3, origin1);
+		    
+		    dimensionData1.dispose();
+		    dimensionData1 = null;
+		    
+		    pmiData1.dispose();
+		    pmiData1 = null;
+		   
+		    pmiDiameterDimension.setOriginCentered(true);
+		    
+		    // Dimension distance from part 
+		    Point3d distancePoint = new Point3d(0.0, 0.0, 0.0);
+		    switch (pmiDefaultPlane.ordinal())
+			{
+			case PmiDefaultPlane._XY_OF_WCS:
+				distancePoint = new Point3d(pickPoint1.x+100.0, pickPoint1.y, pickPoint1.z);
+				break;
+				
+			case PmiDefaultPlane._XZ_OF_WCS:
+				distancePoint = new Point3d(pickPoint1.x, pickPoint1.y, pickPoint1.z+100.0);
+				break;	
+
+			case PmiDefaultPlane._YZ_OF_WCS:
+				distancePoint = new Point3d(pickPoint1.x, pickPoint1.y, pickPoint1.z+100.0);
+				break;
+				
+			}
+		    //Point3d origin2 = new Point3d(100.0, -100.0, 50.0);
+		    Point3d origin2 = distancePoint;
+		    pmiDiameterDimension.setAnnotationOrigin(origin2);
+		    
+		    pmiDiameterDimension.setLeaderOrientation(nxopen.annotations.LeaderOrientation.FROM_LEFT);
 		    
 		}
 		catch (NXException ex)
@@ -655,7 +903,6 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 		
 		print("\nStarting dimension translation...");
 		
-		//TODO Make dimension creation
 		createDimension();
 		
 		// Clear selection
