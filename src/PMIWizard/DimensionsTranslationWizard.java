@@ -122,7 +122,7 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 	private void createDimension() throws RemoteException, NXException
 	{
 		String dimensionName = getMasterDimensionsTree().getSelectedNodes()[0].displayText().split("_")[0];
-		print("dimensionName = " + dimensionName);
+		//print("dimensionName = " + dimensionName);
 		switch (dimensionName)
 		{
 		case "PmiVerticalDimension":
