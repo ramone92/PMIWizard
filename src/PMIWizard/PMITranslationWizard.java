@@ -19,7 +19,7 @@ public class PMITranslationWizard
 	private PMIWizardDialog pmiWizardDialog;
 	private AnnotationsTranslationWizard annotationsTranslationWizard;
 	private DimensionsTranslationWizard dimensionsTranslationWizard;
-	private FaceFinishesTranslationWizard faceFinishesTranslationWizard;
+	private SurfaceFinishesTranslationWizard surfaceFinishesTranslationWizard;
 	
 	private int currentWizardStep;
 	
@@ -102,20 +102,20 @@ public class PMITranslationWizard
     //------------------------------------------------------------------------------
 	private void callFaceFinishesTranslationWizard() throws RemoteException, NXException
 	{
-		if (getPmiWizardDialog().getToggleFaceFinishes().value())
+		if (getPmiWizardDialog().getToggleSurfaceFinishes().value())
 		{
-			getPmiWizardDialog().getTabMasterFaceFinishes().setShow(true);
-			FaceFinishesTranslationWizard fftw = getFaceFinishesTranslationWizard();
+			getPmiWizardDialog().getTabMasterSurfaceFinishes().setShow(true);
+			SurfaceFinishesTranslationWizard fftw = getFaceFinishesTranslationWizard();
 			if (fftw == null)
 			{
-				fftw = new FaceFinishesTranslationWizard(this);
+				fftw = new SurfaceFinishesTranslationWizard(this);
 				setFaceFinishesTranslationWizard(fftw);
 			}
 			fftw.run();						
 		}
 		else
 		{
-			getPmiWizardDialog().getTabMasterFaceFinishes().setShow(false);
+			getPmiWizardDialog().getTabMasterSurfaceFinishes().setShow(false);
 		}	
 	}
 	
@@ -245,6 +245,11 @@ public class PMITranslationWizard
 		
 	}
 	
+	protected String className(String str)
+	{
+		return str.split("_")[0];
+	}
+	
 	//------------------------------------------------------------------------------
     //Getters and Setters
     //------------------------------------------------------------------------------
@@ -334,14 +339,14 @@ public class PMITranslationWizard
 		this.dimensionsTranslationWizard = dimensionsTranslationWizard;
 	}
 
-	public FaceFinishesTranslationWizard getFaceFinishesTranslationWizard()
+	public SurfaceFinishesTranslationWizard getFaceFinishesTranslationWizard()
 	{
-		return faceFinishesTranslationWizard;
+		return surfaceFinishesTranslationWizard;
 	}
 
-	public void setFaceFinishesTranslationWizard(FaceFinishesTranslationWizard faceFinishesTranslationWizard)
+	public void setFaceFinishesTranslationWizard(SurfaceFinishesTranslationWizard faceFinishesTranslationWizard)
 	{
-		this.faceFinishesTranslationWizard = faceFinishesTranslationWizard;
+		this.surfaceFinishesTranslationWizard = faceFinishesTranslationWizard;
 	}
 
 	public int getCurrentWizardStep()

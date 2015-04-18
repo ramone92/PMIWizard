@@ -86,7 +86,7 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
     private nxopen.blockstyler.Group wizardStepSelectPMIObjects;// Block type: Group
     private nxopen.blockstyler.Toggle toggleAnnotations;// Block type: Toggle
     private nxopen.blockstyler.Toggle toggleDimensions;// Block type: Toggle
-    private nxopen.blockstyler.Toggle toggleFaceFinishes;// Block type: Toggle
+    private nxopen.blockstyler.Toggle toggleSurfaceFinishes;// Block type: Toggle
     private nxopen.blockstyler.Group wizardStepObjects;// Block type: Group
     private nxopen.blockstyler.Group tabMasterAnnotations;// Block type: Group
     private nxopen.blockstyler.TabControl tabControl;// Block type: Tabs Page
@@ -95,9 +95,9 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
     private nxopen.blockstyler.Tree masterDimensionsTree;// Block type: Tree Control
     private nxopen.blockstyler.CurveCollector dimensionEdgeSelect;// Block type: Curve Collector
     private nxopen.blockstyler.Button translateDimensionButton;// Block type: Button
-    private nxopen.blockstyler.Group tabMasterFaceFinishes;// Block type: Group
-    private nxopen.blockstyler.Tree masterFaceFinishesTree;// Block type: Tree Control
-    private nxopen.blockstyler.FaceCollector faceFinishFaceSelect;// Block type: Face Collector
+    private nxopen.blockstyler.Group tabMasterSurfaceFinishes;// Block type: Group
+    private nxopen.blockstyler.Tree masterSurfaceFinishesTree;// Block type: Tree Control
+    private nxopen.blockstyler.FaceCollector surfaceFinishFaceSelect;// Block type: Face Collector
     
     //------------------------------------------------------------------------------
     //Bit Option for Property: EntityType
@@ -309,20 +309,20 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
             
             toggleAnnotations = (nxopen.blockstyler.Toggle)theDialog.topBlock().findBlock("toggleAnnotations");
             toggleDimensions = (nxopen.blockstyler.Toggle)theDialog.topBlock().findBlock("toggleDimensions");
-            toggleFaceFinishes = (nxopen.blockstyler.Toggle)theDialog.topBlock().findBlock("toggleFaceFinishes");
+            toggleSurfaceFinishes = (nxopen.blockstyler.Toggle)theDialog.topBlock().findBlock("toggleFaceFinishes");
             
             tabControl = (nxopen.blockstyler.TabControl)theDialog.topBlock().findBlock("tabControl");
             tabMasterAnnotations = (nxopen.blockstyler.Group)theDialog.topBlock().findBlock("tabMasterAnnotations");
             tabMasterDimensions = (nxopen.blockstyler.Group)theDialog.topBlock().findBlock("tabMasterDimensions");
-            tabMasterFaceFinishes = (nxopen.blockstyler.Group)theDialog.topBlock().findBlock("tabMasterFaceFinishes");
+            tabMasterSurfaceFinishes = (nxopen.blockstyler.Group)theDialog.topBlock().findBlock("tabMasterFaceFinishes");
             
             masterAnnotationsTree = (nxopen.blockstyler.Tree)theDialog.topBlock().findBlock("masterAnnotationsTree");            
             masterDimensionsTree = (nxopen.blockstyler.Tree)theDialog.topBlock().findBlock("masterDimensionsTree");            
-            masterFaceFinishesTree = (nxopen.blockstyler.Tree)theDialog.topBlock().findBlock("masterFaceFinishesTree");
+            masterSurfaceFinishesTree = (nxopen.blockstyler.Tree)theDialog.topBlock().findBlock("masterFaceFinishesTree");
             
             dimensionEdgeSelect = (nxopen.blockstyler.CurveCollector)theDialog.topBlock().findBlock("dimensionEdgeSelect");
             translateDimensionButton = (nxopen.blockstyler.Button)theDialog.topBlock().findBlock("translateDimensionButton");
-            faceFinishFaceSelect = (nxopen.blockstyler.FaceCollector)theDialog.topBlock().findBlock("faceFinishFaceSelect");
+            surfaceFinishFaceSelect = (nxopen.blockstyler.FaceCollector)theDialog.topBlock().findBlock("faceFinishFaceSelect");
             //------------------------------------------------------------------------------
             //Registration of Treelist specific callbacks
             //------------------------------------------------------------------------------
@@ -464,7 +464,7 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
             {
             //---------Enter your code here-----------
             }
-            else if(block == toggleFaceFinishes)
+            else if(block == toggleSurfaceFinishes)
             {
             //---------Enter your code here-----------
             }
@@ -477,7 +477,7 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
             //---------Enter your code here-----------
             	getPMITranslationWizard().getDimensionsTranslationWizard().translate();
             }
-            else if(block == faceFinishFaceSelect)
+            else if(block == surfaceFinishFaceSelect)
             {
             //---------Enter your code here-----------
             }
@@ -713,17 +713,15 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
 	{
 		return wizardStepSelectPart;
 	}
-	public void setWizardStepSelectPart(
-			nxopen.blockstyler.Group wizardStepSelectPart)
+	public void setWizardStepSelectPart(nxopen.blockstyler.Group wizardStepSelectPart)
 	{
 		this.wizardStepSelectPart = wizardStepSelectPart;
 	}
-	public nxopen.blockstyler.FileSelection getPartFileBrowser()
+	public FileSelection getPartFileBrowser()
 	{
 		return partFileBrowser;
 	}
-	public void setPartFileBrowser(
-			nxopen.blockstyler.FileSelection nativeFileBrowser0)
+	public void setPartFileBrowser(FileSelection nativeFileBrowser0)
 	{
 		this.partFileBrowser = nativeFileBrowser0;
 	}
@@ -731,34 +729,33 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
 	{
 		return wizardStepSelectPMIObjects;
 	}
-	public void setWizardStepSelectPMIObjects(
-			nxopen.blockstyler.Group wizardStepSelectPMIObjects)
+	public void setWizardStepSelectPMIObjects(nxopen.blockstyler.Group wizardStepSelectPMIObjects)
 	{
 		this.wizardStepSelectPMIObjects = wizardStepSelectPMIObjects;
 	}
-	public nxopen.blockstyler.Toggle getToggleAnnotations()
+	public Toggle getToggleAnnotations()
 	{
 		return toggleAnnotations;
 	}
-	public void setToggleAnnotations(nxopen.blockstyler.Toggle toggleAnnotations)
+	public void setToggleAnnotations(Toggle toggleAnnotations)
 	{
 		this.toggleAnnotations = toggleAnnotations;
 	}
-	public nxopen.blockstyler.Toggle getToggleDimensions()
+	public Toggle getToggleDimensions()
 	{
 		return toggleDimensions;
 	}
-	public void setToggleDimensions(nxopen.blockstyler.Toggle toggleDimensions)
+	public void setToggleDimensions(Toggle toggleDimensions)
 	{
 		this.toggleDimensions = toggleDimensions;
 	}
-	public nxopen.blockstyler.Toggle getToggleFaceFinishes()
+	public Toggle getToggleSurfaceFinishes()
 	{
-		return toggleFaceFinishes;
+		return toggleSurfaceFinishes;
 	}
-	public void setToggleFaceFinishes(nxopen.blockstyler.Toggle toggleFaceFinishes)
+	public void setToggleSurfaceFinishes(Toggle toggleFaceFinishes)
 	{
-		this.toggleFaceFinishes = toggleFaceFinishes;
+		this.toggleSurfaceFinishes = toggleFaceFinishes;
 	}
 	public nxopen.blockstyler.Group getWizardStepObjects()
 	{
@@ -768,11 +765,11 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
 	{
 		this.wizardStepObjects = wizardStepObjects;
 	}
-	public nxopen.blockstyler.TabControl getTabControl()
+	public TabControl getTabControl()
 	{
 		return tabControl;
 	}
-	public void setTabControl(nxopen.blockstyler.TabControl tabControl)
+	public void setTabControl(TabControl tabControl)
 	{
 		this.tabControl = tabControl;
 	}
@@ -788,11 +785,11 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
 	{
 		this.tabMasterAnnotations = tabPage1;
 	}
-	public nxopen.blockstyler.Tree getMasterAnnotationsTree()
+	public Tree getMasterAnnotationsTree()
 	{
 		return masterAnnotationsTree;
 	}
-	public void setMasterAnnotationsTree(nxopen.blockstyler.Tree masterAnnotations)
+	public void setMasterAnnotationsTree(Tree masterAnnotations)
 	{
 		this.masterAnnotationsTree = masterAnnotations;
 	}
@@ -800,56 +797,53 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
 	{
 		this.tabMasterDimensions = tabPage2;
 	}
-	public nxopen.blockstyler.Tree getMasterDimensionsTree()
+	public Tree getMasterDimensionsTree()
 	{
 		return masterDimensionsTree;
 	}
-	public void setMasterDimensionsTree(nxopen.blockstyler.Tree masterDimensions)
+	public void setMasterDimensionsTree(Tree masterDimensions)
 	{
 		this.masterDimensionsTree = masterDimensions;
 	}
-	public nxopen.blockstyler.Group getTabMasterFaceFinishes()
+	public nxopen.blockstyler.Group getTabMasterSurfaceFinishes()
 	{
-		return tabMasterFaceFinishes;
+		return tabMasterSurfaceFinishes;
 	}
-	public void setTabMasterFaceFinishes(nxopen.blockstyler.Group tabPage)
+	public void setTabMasterSurfaceFinishes(nxopen.blockstyler.Group tabPage)
 	{
-		this.tabMasterFaceFinishes = tabPage;
+		this.tabMasterSurfaceFinishes = tabPage;
 	}
-	public nxopen.blockstyler.Tree getMasterFaceFinishesTree()
+	public Tree getMasterSurfaceFinishesTree()
 	{
-		return masterFaceFinishesTree;
+		return masterSurfaceFinishesTree;
 	}
-	public void setMasterFaceFinishesTree(nxopen.blockstyler.Tree masterFaceFinishes)
+	public void setMasterSurfaceFinishesTree(Tree masterFaceFinishes)
 	{
-		this.masterFaceFinishesTree = masterFaceFinishes;
+		this.masterSurfaceFinishesTree = masterFaceFinishes;
 	}
-	public nxopen.blockstyler.CurveCollector getDimensionEdgeSelect()
+	public CurveCollector getDimensionEdgeSelect()
 	{
 		return dimensionEdgeSelect;
 	}
-	public void setDimensionEdgeSelect(
-			nxopen.blockstyler.CurveCollector dimensionEdgeSelect)
+	public void setDimensionEdgeSelect(CurveCollector dimensionEdgeSelect)
 	{
 		this.dimensionEdgeSelect = dimensionEdgeSelect;
 	}
-	public nxopen.blockstyler.Button getTranslateDimensionButton()
+	public Button getTranslateDimensionButton()
 	{
 		return translateDimensionButton;
 	}
-	public void setTranslateDimensionButton(
-			nxopen.blockstyler.Button translateDimensionButton)
+	public void setTranslateDimensionButton(Button translateDimensionButton)
 	{
 		this.translateDimensionButton = translateDimensionButton;
 	}
-	public nxopen.blockstyler.FaceCollector getFaceFinishFaceSelect()
+	public FaceCollector getSurfaceFinishFaceSelect()
 	{
-		return faceFinishFaceSelect;
+		return surfaceFinishFaceSelect;
 	}
-	public void setFaceFinishFaceSelect(
-			nxopen.blockstyler.FaceCollector faceFinishFaceSelect)
+	public void setSurfaceFinishFaceSelect(FaceCollector surfaceFinishFaceSelect)
 	{
-		this.faceFinishFaceSelect = faceFinishFaceSelect;
+		this.surfaceFinishFaceSelect = surfaceFinishFaceSelect;
 	}
     
 }

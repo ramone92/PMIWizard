@@ -21,7 +21,7 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
     //This constructor invokes from PMITranslationWizard.callDimensionsTranslationWizard()
 	public DimensionsTranslationWizard(PMITranslationWizard pmitw) throws NXException, RemoteException
 	{
-		print("*** 3. DimensionsTranslationWizard created ***");
+		print("*** DimensionsTranslationWizard created ***");
 		//getMasterDimensions();
 		setPmiWizardDialog(pmitw.getPmiWizardDialog());
 		
@@ -65,7 +65,7 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 	{
 		try
 		{
-			print("\n---------------start of fillTree function---------------\n");
+			print("\n---------------start of fillDimensionTree function---------------\n");
 			
 			AnnotationManager annotationManager = getMasterPart().annotations();
 			PmiManager pmiManager = getMasterPart().pmiManager();
@@ -97,7 +97,7 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 					mdl.add(dim);
 					
 					className = an.getClass().getSimpleName();
-					nodeText = className + ": " + dim.computedSize();
+					nodeText = className(className) + ": " + dim.computedSize();
 					
 					Node newNode = getMasterDimensionsTree().createNode(nodeText);
 		    		getMasterDimensionsTree().insertNode(newNode, null, null, Tree.NodeInsertOption.LAST);       
@@ -121,7 +121,7 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 	
 	private void createDimension() throws RemoteException, NXException
 	{
-		String dimensionName = getMasterDimensionsTree().getSelectedNodes()[0].displayText().split("_")[0];
+		String dimensionName = getMasterDimensionsTree().getSelectedNodes()[0].displayText().split(":")[0];
 		//print("dimensionName = " + dimensionName);
 		switch (dimensionName)
 		{
