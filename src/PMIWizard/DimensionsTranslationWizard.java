@@ -81,7 +81,7 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 			{
 				taggedObject = it.next();				
 				pmi = (Pmi) taggedObject;
-				print("*******************");
+				//print("*******************");
 				Annotation an = pmi.getDisplayInstances()[0];
 		
 				String className;			
@@ -106,7 +106,7 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 				DisplayableObject[] dispObjs = ao.getObjects();
 				for (DisplayableObject dispObject : dispObjs)
 				{
-					print(dispObject.journalIdentifier());
+					//print(dispObject.journalIdentifier());
 				}
 				
 				setMasterDimensionsList(mdl);

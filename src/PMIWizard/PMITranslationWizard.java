@@ -102,13 +102,21 @@ public class PMITranslationWizard
     //------------------------------------------------------------------------------
 	private void callFaceFinishesTranslationWizard() throws RemoteException, NXException
 	{
-		/*getPmiWizardDialog().getMasterFaceFinishesTree().insertColumn(1, "Имя объекта", 500);
-    	Node newNode;
-    	for (int i = 0; i < 5; i++)
+		if (getPmiWizardDialog().getToggleFaceFinishes().value())
 		{
-    		newNode = getPmiWizardDialog().getMasterFaceFinishesTree().createNode("face finish node: " + i);
-    		getPmiWizardDialog().getMasterFaceFinishesTree().insertNode(newNode, null, null, Tree.NodeInsertOption.LAST);        	
-		} */		
+			getPmiWizardDialog().getTabMasterFaceFinishes().setShow(true);
+			FaceFinishesTranslationWizard fftw = getFaceFinishesTranslationWizard();
+			if (fftw == null)
+			{
+				fftw = new FaceFinishesTranslationWizard(this);
+				setFaceFinishesTranslationWizard(fftw);
+			}
+			fftw.run();						
+		}
+		else
+		{
+			getPmiWizardDialog().getTabMasterFaceFinishes().setShow(false);
+		}	
 	}
 	
 	//------------------------------------------------------------------------------
