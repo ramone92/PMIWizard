@@ -309,20 +309,20 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
             
             toggleAnnotations = (nxopen.blockstyler.Toggle)theDialog.topBlock().findBlock("toggleAnnotations");
             toggleDimensions = (nxopen.blockstyler.Toggle)theDialog.topBlock().findBlock("toggleDimensions");
-            toggleSurfaceFinishes = (nxopen.blockstyler.Toggle)theDialog.topBlock().findBlock("toggleFaceFinishes");
+            toggleSurfaceFinishes = (nxopen.blockstyler.Toggle)theDialog.topBlock().findBlock("toggleSurfaceFinishes");
             
             tabControl = (nxopen.blockstyler.TabControl)theDialog.topBlock().findBlock("tabControl");
             tabMasterAnnotations = (nxopen.blockstyler.Group)theDialog.topBlock().findBlock("tabMasterAnnotations");
             tabMasterDimensions = (nxopen.blockstyler.Group)theDialog.topBlock().findBlock("tabMasterDimensions");
-            tabMasterSurfaceFinishes = (nxopen.blockstyler.Group)theDialog.topBlock().findBlock("tabMasterFaceFinishes");
+            tabMasterSurfaceFinishes = (nxopen.blockstyler.Group)theDialog.topBlock().findBlock("tabMasterSurfaceFinishes");
             
             masterAnnotationsTree = (nxopen.blockstyler.Tree)theDialog.topBlock().findBlock("masterAnnotationsTree");            
             masterDimensionsTree = (nxopen.blockstyler.Tree)theDialog.topBlock().findBlock("masterDimensionsTree");            
-            masterSurfaceFinishesTree = (nxopen.blockstyler.Tree)theDialog.topBlock().findBlock("masterFaceFinishesTree");
+            masterSurfaceFinishesTree = (nxopen.blockstyler.Tree)theDialog.topBlock().findBlock("masterSurfaceFinishesTree");
             
             dimensionEdgeSelect = (nxopen.blockstyler.CurveCollector)theDialog.topBlock().findBlock("dimensionEdgeSelect");
             translateDimensionButton = (nxopen.blockstyler.Button)theDialog.topBlock().findBlock("translateDimensionButton");
-            surfaceFinishFaceSelect = (nxopen.blockstyler.FaceCollector)theDialog.topBlock().findBlock("faceFinishFaceSelect");
+            surfaceFinishFaceSelect = (nxopen.blockstyler.FaceCollector)theDialog.topBlock().findBlock("surfaceFinishFaceSelect");
             //------------------------------------------------------------------------------
             //Registration of Treelist specific callbacks
             //------------------------------------------------------------------------------

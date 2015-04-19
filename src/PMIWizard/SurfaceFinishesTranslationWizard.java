@@ -81,7 +81,7 @@ public class SurfaceFinishesTranslationWizard extends PMITranslationWizard imple
 					mdl.add(sf);
 					
 					className = an.getClass().getSimpleName();
-					nodeText = className(className);
+					nodeText = className(className) + ": " + "finish sign";
 					
 					Node newNode = getMasterSurfaceFinishesTree().createNode(nodeText);
 					getMasterSurfaceFinishesTree().insertNode(newNode, null, null, Tree.NodeInsertOption.LAST);       
@@ -90,7 +90,7 @@ public class SurfaceFinishesTranslationWizard extends PMITranslationWizard imple
 				DisplayableObject[] dispObjs = ao.getObjects();
 				for (DisplayableObject dispObject : dispObjs)
 				{
-					print(dispObject.journalIdentifier());
+					//print(dispObject.journalIdentifier());
 				}
 				
 				setMasterSurfaceFinishesList(mdl);

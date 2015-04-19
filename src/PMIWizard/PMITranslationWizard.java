@@ -60,8 +60,13 @@ public class PMITranslationWizard
 		if (getPmiWizardDialog().getToggleAnnotations().value())
 		{
 			getPmiWizardDialog().getTabMasterAnnotations().setShow(true);
-			if (getAnnotationsTranslationWizard() == null)
-				setAnnotationsTranslationWizard(new AnnotationsTranslationWizard(getPmiWizardDialog().getMasterAnnotationsTree()));			
+			AnnotationsTranslationWizard atw = getAnnotationsTranslationWizard();
+			if (atw == null)
+			{
+				atw = new AnnotationsTranslationWizard(this);
+				setAnnotationsTranslationWizard(atw);
+			}							
+			atw.run();
 		}
 		else
 		{
