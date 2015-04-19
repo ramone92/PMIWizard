@@ -122,7 +122,7 @@ public class SurfaceFinishesTranslationWizard extends PMITranslationWizard imple
 			break;	
 
 		default:
-			print("No switch branch for such dimnesion");
+			print("No switch branch for such surface finish");
 			break;
 		}		
 	}
@@ -152,7 +152,7 @@ public class SurfaceFinishesTranslationWizard extends PMITranslationWizard imple
 		
 		print("\nStarting surface finish translation...");
 		
-		createSurfaceFinish();
+		//createSurfaceFinish();
 		
 		// Clear selection
 		getPmiWizardDialog().getSurfaceFinishFaceSelect().setSelectedObjects(new TaggedObject[0]);		

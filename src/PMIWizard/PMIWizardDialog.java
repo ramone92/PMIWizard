@@ -97,7 +97,8 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
     private nxopen.blockstyler.Button translateDimensionButton;// Block type: Button
     private nxopen.blockstyler.Group tabMasterSurfaceFinishes;// Block type: Group
     private nxopen.blockstyler.Tree masterSurfaceFinishesTree;// Block type: Tree Control
-    private nxopen.blockstyler.FaceCollector surfaceFinishFaceSelect;// Block type: Face Collector
+    private nxopen.blockstyler.FaceCollector surfaceFinishSurfaceSelect;// Block type: Face Collector
+    private nxopen.blockstyler.Button translateSurfaceFinishButton;// Block type: Button
     
     //------------------------------------------------------------------------------
     //Bit Option for Property: EntityType
@@ -322,7 +323,8 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
             
             dimensionEdgeSelect = (nxopen.blockstyler.CurveCollector)theDialog.topBlock().findBlock("dimensionEdgeSelect");
             translateDimensionButton = (nxopen.blockstyler.Button)theDialog.topBlock().findBlock("translateDimensionButton");
-            surfaceFinishFaceSelect = (nxopen.blockstyler.FaceCollector)theDialog.topBlock().findBlock("surfaceFinishFaceSelect");
+            surfaceFinishSurfaceSelect = (nxopen.blockstyler.FaceCollector)theDialog.topBlock().findBlock("surfaceFinishSurfaceSelect");
+            translateSurfaceFinishButton = (nxopen.blockstyler.Button)theDialog.topBlock().findBlock("translateSurfaceFinishButton");
             //------------------------------------------------------------------------------
             //Registration of Treelist specific callbacks
             //------------------------------------------------------------------------------
@@ -477,9 +479,14 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
             //---------Enter your code here-----------
             	getPMITranslationWizard().getDimensionsTranslationWizard().translate();
             }
-            else if(block == surfaceFinishFaceSelect)
+            else if(block == surfaceFinishSurfaceSelect)
             {
             //---------Enter your code here-----------
+            }
+            else if(block == translateSurfaceFinishButton)
+            {
+            //---------Enter your code here-----------
+            	getPMITranslationWizard().getSurfaceFinishesTranslationWizard().translate();
             }
         }
              
@@ -839,11 +846,11 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
 	}
 	public FaceCollector getSurfaceFinishFaceSelect()
 	{
-		return surfaceFinishFaceSelect;
+		return surfaceFinishSurfaceSelect;
 	}
 	public void setSurfaceFinishFaceSelect(FaceCollector surfaceFinishFaceSelect)
 	{
-		this.surfaceFinishFaceSelect = surfaceFinishFaceSelect;
+		this.surfaceFinishSurfaceSelect = surfaceFinishFaceSelect;
 	}
     
 }

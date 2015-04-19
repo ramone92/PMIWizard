@@ -110,11 +110,11 @@ public class PMITranslationWizard
 		if (getPmiWizardDialog().getToggleSurfaceFinishes().value())
 		{
 			getPmiWizardDialog().getTabMasterSurfaceFinishes().setShow(true);
-			SurfaceFinishesTranslationWizard fftw = getFaceFinishesTranslationWizard();
+			SurfaceFinishesTranslationWizard fftw = getSurfaceFinishesTranslationWizard();
 			if (fftw == null)
 			{
 				fftw = new SurfaceFinishesTranslationWizard(this);
-				setFaceFinishesTranslationWizard(fftw);
+				setSurfaceFinishesTranslationWizard(fftw);
 			}
 			fftw.run();						
 		}
@@ -344,14 +344,14 @@ public class PMITranslationWizard
 		this.dimensionsTranslationWizard = dimensionsTranslationWizard;
 	}
 
-	public SurfaceFinishesTranslationWizard getFaceFinishesTranslationWizard()
+	public SurfaceFinishesTranslationWizard getSurfaceFinishesTranslationWizard()
 	{
 		return surfaceFinishesTranslationWizard;
 	}
 
-	public void setFaceFinishesTranslationWizard(SurfaceFinishesTranslationWizard faceFinishesTranslationWizard)
+	public void setSurfaceFinishesTranslationWizard(SurfaceFinishesTranslationWizard surfaceFinishesTranslationWizard)
 	{
-		this.surfaceFinishesTranslationWizard = faceFinishesTranslationWizard;
+		this.surfaceFinishesTranslationWizard = surfaceFinishesTranslationWizard;
 	}
 
 	public int getCurrentWizardStep()
