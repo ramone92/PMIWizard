@@ -9,7 +9,7 @@
 //        Created by: zikt
 //              Version: NX 8.5
 //              Date: 04-19-2015  (Format: mm-dd-yyyy)
-//              Time: 00:23 (Format: hh-mm)
+//              Time: 20:55 (Format: hh-mm)
 //
 //==============================================================================
 
@@ -93,6 +93,7 @@ public class PMIWizard implements BlockDialog.Initialize, BlockDialog.DialogShow
     private nxopen.blockstyler.Group tabMasterSurfaceFinishes;// Block type: Group
     private nxopen.blockstyler.Tree masterSurfaceFinishesTree;// Block type: Tree Control
     private nxopen.blockstyler.FaceCollector surfaceFinishFaceSelect;// Block type: Face Collector
+    private nxopen.blockstyler.Button translateSurfaceFinishButton;// Block type: Button
     //------------------------------------------------------------------------------
     //Bit Option for Property: EntityType
     //------------------------------------------------------------------------------
@@ -300,6 +301,7 @@ public class PMIWizard implements BlockDialog.Initialize, BlockDialog.DialogShow
             tabMasterSurfaceFinishes = (nxopen.blockstyler.Group)theDialog.topBlock().findBlock("tabMasterSurfaceFinishes");
             masterSurfaceFinishesTree = (nxopen.blockstyler.Tree)theDialog.topBlock().findBlock("masterSurfaceFinishesTree");
             surfaceFinishFaceSelect = (nxopen.blockstyler.FaceCollector)theDialog.topBlock().findBlock("surfaceFinishFaceSelect");
+            translateSurfaceFinishButton = (nxopen.blockstyler.Button)theDialog.topBlock().findBlock("translateSurfaceFinishButton");
             //------------------------------------------------------------------------------
             //Registration of Treelist specific callbacks
             //------------------------------------------------------------------------------
@@ -419,6 +421,10 @@ public class PMIWizard implements BlockDialog.Initialize, BlockDialog.DialogShow
             //---------Enter your code here-----------
             }
             else if(block == surfaceFinishFaceSelect)
+            {
+            //---------Enter your code here-----------
+            }
+            else if(block == translateSurfaceFinishButton)
             {
             //---------Enter your code here-----------
             }
