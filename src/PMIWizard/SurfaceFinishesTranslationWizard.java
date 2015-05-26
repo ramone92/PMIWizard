@@ -60,6 +60,7 @@ public class SurfaceFinishesTranslationWizard extends PMITranslationWizard imple
 			Pmi pmi;
 			
 			getMasterSurfaceFinishesTree().insertColumn(0, "Face finish", 500);
+			SurfaceFinishBuilder sfb;
 			
 			while(it.hasNext())
 			{
@@ -77,11 +78,12 @@ public class SurfaceFinishesTranslationWizard extends PMITranslationWizard imple
 				if (an instanceof SurfaceFinish)
 				{
 					sf = (SurfaceFinish) an;
+					sfb = getMasterPart().pmiManager().pmiAttributes().createSurfaceFinishBuilder(sf);
 					
 					mdl.add(sf);
 					
 					className = an.getClass().getSimpleName();
-					nodeText = className(className) + ": " + "finish sign";
+					nodeText = className(className) + ": " + sfb.a1();
 					
 					Node newNode = getMasterSurfaceFinishesTree().createNode(nodeText);
 					getMasterSurfaceFinishesTree().insertNode(newNode, null, null, Tree.NodeInsertOption.LAST);       
