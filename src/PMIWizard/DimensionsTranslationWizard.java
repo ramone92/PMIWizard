@@ -23,7 +23,7 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
     //This constructor invokes from PMITranslationWizard.callDimensionsTranslationWizard()
 	public DimensionsTranslationWizard(PMITranslationWizard pmitw) throws NXException, RemoteException
 	{
-		print("*** DimensionsTranslationWizard created ***");
+//		print("*** DimensionsTranslationWizard created ***");
 		//getMasterDimensions();
 		setPmiWizardDialog(pmitw.getPmiWizardDialog());
 		
@@ -69,7 +69,7 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 	{
 		try
 		{
-			print("\n---------------start of fillDimensionTree function---------------\n");
+//			print("\n---------------start of fillDimensionTree function---------------\n");
 			
 			AnnotationManager annotationManager = getMasterPart().annotations();
 			PmiManager pmiManager = getMasterPart().pmiManager();
