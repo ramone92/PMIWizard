@@ -5,7 +5,8 @@ import java.io.StringWriter;
 import java.rmi.RemoteException;
 
 import nxopen.*;
-import nxopen.blockstyler.*;
+import nxopen.annotations.*;
+import nxopen.preferences.AnnotationPreferences;
 
 public class PMITranslationWizard
 {
@@ -43,8 +44,9 @@ public class PMITranslationWizard
 		setPmiWizardDialog(wizard);
 		setWorkPart(getTheSession().parts().work());
 		
-		//TODO to be written		
-
+		//TODO to be written	
+		setAnnotationsPreferences();
+		
 	}
 	
 	
@@ -125,6 +127,29 @@ public class PMITranslationWizard
 	}
 	
 	//------------------------------------------------------------------------------
+    // This method sets annotations preferences
+    //------------------------------------------------------------------------------
+	private void setAnnotationsPreferences() throws RemoteException, NXException
+	{
+		AnnotationPreferences ap = getWorkPart().annotations().preferences();
+		
+		LetteringPreferences  lp = ap.getLetteringPreferences();
+		
+		nxopen.annotations.Lettering dimensionText1 = new nxopen.annotations.Lettering();
+	    dimensionText1.size = 7.5;
+	    dimensionText1.characterSpaceFactor = 0.0;
+	    dimensionText1.aspectRatio = 1.0;
+	    dimensionText1.lineSpaceFactor = 1.0;
+	    dimensionText1.cfw.color = 216;
+	    dimensionText1.cfw.font = 2;
+	    dimensionText1.cfw.width = nxopen.annotations.LineWidth.THIN;
+	    dimensionText1.italic = false;
+	    lp.setDimensionText(dimensionText1);
+	    
+	    ap.setLetteringPreferences(lp);
+	}
+	
+	//------------------------------------------------------------------------------
     // Public methods
     //------------------------------------------------------------------------------	
 	
@@ -135,24 +160,24 @@ public class PMITranslationWizard
 	{
 		setCurrentWizardStep(getPmiWizardDialog().getWizard().currentStep());
 		
-		print("*** currentWizardStep = " + getCurrentWizardStep());
+//		print("*** currentWizardStep = " + getCurrentWizardStep());
 		
 		switch (getCurrentWizardStep())
 		{
-		case 0:
-			
+		case 0:			
 			break;
 			
 		case 1:		
 			openMasterPart();
 			break;
-			
+		
 		case 2:
+			break;
 			
+		case 3:			
 			callAnnotationsTranslationWizard();
 			callDimensionsTranslationWizard();
 			callFaceFinishesTranslationWizard();
-		
 			break;
 			
 		default:
@@ -166,11 +191,11 @@ public class PMITranslationWizard
     //------------------------------------------------------------------------------
 	public void openMasterPart() throws RemoteException, NXException
 	{
-		print("*** 1. Opening master part ***");
+//		print("*** 1. Opening master part ***");
 		
 		if (getMasterPart() != null)
 		{
-			print("Master part is already opened");
+//			print("Master part is already opened");
 			return;
 		}
 		

@@ -99,6 +99,8 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
     private nxopen.blockstyler.Tree masterSurfaceFinishesTree;// Block type: Tree Control
     private nxopen.blockstyler.FaceCollector surfaceFinishSurfaceSelect;// Block type: Face Collector
     private nxopen.blockstyler.Button translateSurfaceFinishButton;// Block type: Button
+    private nxopen.blockstyler.Group wizardStepSelectAnnotationPlane;// Block type: Group
+    private nxopen.blockstyler.SpecifyPlane annotationPlane;// Block type: Specify Plane
     
     //------------------------------------------------------------------------------
     //Bit Option for Property: EntityType
@@ -325,6 +327,9 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
             translateDimensionButton = (nxopen.blockstyler.Button)theDialog.topBlock().findBlock("translateDimensionButton");
             surfaceFinishSurfaceSelect = (nxopen.blockstyler.FaceCollector)theDialog.topBlock().findBlock("surfaceFinishSurfaceSelect");
             translateSurfaceFinishButton = (nxopen.blockstyler.Button)theDialog.topBlock().findBlock("translateSurfaceFinishButton");
+            
+            wizardStepSelectAnnotationPlane = (nxopen.blockstyler.Group)theDialog.topBlock().findBlock("wizardStepSelectAnnotationPlane");
+            annotationPlane = (nxopen.blockstyler.SpecifyPlane)theDialog.topBlock().findBlock("annotationPlane");
             //------------------------------------------------------------------------------
             //Registration of Treelist specific callbacks
             //------------------------------------------------------------------------------
@@ -487,6 +492,10 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
             {
             //---------Enter your code here-----------
             	getPMITranslationWizard().getSurfaceFinishesTranslationWizard().translate();
+            }
+            else if(block == annotationPlane)
+            {
+            //---------Enter your code here-----------
             }
         }
              
@@ -851,6 +860,14 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
 	public void setSurfaceFinishFaceSelect(FaceCollector surfaceFinishFaceSelect)
 	{
 		this.surfaceFinishSurfaceSelect = surfaceFinishFaceSelect;
+	}
+	public nxopen.blockstyler.SpecifyPlane getAnnotationPlane()
+	{
+		return annotationPlane;
+	}
+	public void setAnnotationPlane(nxopen.blockstyler.SpecifyPlane annotationPlane)
+	{
+		this.annotationPlane = annotationPlane;
 	}
     
 }

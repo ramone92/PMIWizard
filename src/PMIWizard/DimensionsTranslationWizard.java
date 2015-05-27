@@ -13,6 +13,8 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 	private Tree masterDimensionsTree;
 	private ArrayList<Dimension> masterDimensionsList;
 	private ArrayList<String> masterDimensionsTypesList;
+
+	private Plane annotationPlane;
 	
 	//------------------------------------------------------------------------------
     //Constructors
@@ -34,6 +36,8 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 		masterTree.setOnSelectHandler(this);
 		setMasterDimensionsTree(masterTree);				
 		//test();
+		
+		setAnnotationPlane((Plane)pmitw.getPmiWizardDialog().getAnnotationPlane().getSelectedObjects()[0]);
 	}
 	
 	//------------------------------------------------------------------------------
@@ -123,6 +127,7 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 	{
 		String dimensionName = getMasterDimensionsTree().getSelectedNodes()[0].displayText().split(":")[0];
 		//print("dimensionName = " + dimensionName);
+		print("AnnotationPlane = " + getAnnotationPlane().method().name());
 		switch (dimensionName)
 		{
 		case "PmiVerticalDimension":
@@ -138,7 +143,7 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 			break;	
 
 		default:
-			print("No switch branch for such dimnesion");
+			print("No switch branch for such dimension");
 			break;
 		}		
 	}
@@ -589,7 +594,7 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 		    */
 		    Xform xform3;
 		    PmiDefaultPlane pmiDefaultPlane = PmiDefaultPlane.YZ_OF_WCS;
-		    xform3 = dimensionData1.getInferredPlane(pmiDefaultPlane, nxopen.annotations.DimensionType.VERTICAL);
+		    xform3 = dimensionData1.getInferredPlane(pmiDefaultPlane, nxopen.annotations.DimensionType.HORIZONTAL);
 		    
 		    Point3d origin1 = new Point3d(0.0, 0.0, 0.0);
 		    nxopen.annotations.PmiHorizontalDimension pmiHorizontalDimension;
@@ -834,7 +839,8 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 		    */
 		    Xform xform3;
 		    PmiDefaultPlane pmiDefaultPlane = PmiDefaultPlane.YZ_OF_WCS;
-		    xform3 = dimensionData1.getInferredPlane(pmiDefaultPlane, nxopen.annotations.DimensionType.VERTICAL);
+//		    PmiDefaultPlane pmiDefaultPlane = getAnnotationPlane().method();
+		    xform3 = dimensionData1.getInferredPlane(pmiDefaultPlane, nxopen.annotations.DimensionType.DIAMETER);
 		    
 		    Point3d origin1 = new Point3d(0.0, 0.0, 0.0);
 		    nxopen.annotations.PmiDiameterDimension pmiDiameterDimension;
@@ -850,22 +856,6 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 		    
 		    // Dimension distance from part 
 		    Point3d distancePoint = new Point3d(0.0, 0.0, 0.0);
-		    switch (pmiDefaultPlane.ordinal())
-			{
-			case PmiDefaultPlane._XY_OF_WCS:
-				distancePoint = new Point3d(pickPoint1.x+100.0, pickPoint1.y, pickPoint1.z);
-				break;
-				
-			case PmiDefaultPlane._XZ_OF_WCS:
-				distancePoint = new Point3d(pickPoint1.x, pickPoint1.y, pickPoint1.z+100.0);
-				break;	
-
-			case PmiDefaultPlane._YZ_OF_WCS:
-				distancePoint = new Point3d(pickPoint1.x, pickPoint1.y, pickPoint1.z+100.0);
-				break;
-				
-			}
-		    //Point3d origin2 = new Point3d(100.0, -100.0, 50.0);
 		    Point3d origin2 = distancePoint;
 		    pmiDiameterDimension.setAnnotationOrigin(origin2);
 		    
@@ -943,6 +933,27 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 	public void setMasterDimensionsTypesList(ArrayList<String> masterDimensionsTypeList)
 	{
 		this.masterDimensionsTypesList = masterDimensionsTypeList;
+	}
+
+	public Plane getAnnotationPlane()
+	{
+		Plane ap;
+		try
+		{
+			ap = (Plane)getPmiWizardDialog().getAnnotationPlane().getSelectedObjects()[0];
+			print("ap == null " + (ap == null));
+		} catch (RemoteException | NXException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		return annotationPlane;
+	}
+
+	public void setAnnotationPlane(Plane annotationPlane)
+	{
+		this.annotationPlane = annotationPlane;
 	}
 
 	@Override
