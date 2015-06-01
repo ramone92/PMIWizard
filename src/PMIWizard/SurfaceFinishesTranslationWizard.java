@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import nxopen.*;
 import nxopen.annotations.*;
+import nxopen.annotations.PlaneBuilder.PlaneMethodType;
 import nxopen.blockstyler.*;
 
 public class SurfaceFinishesTranslationWizard extends PMITranslationWizard implements Tree.OnSelectCallback
@@ -19,7 +20,7 @@ public class SurfaceFinishesTranslationWizard extends PMITranslationWizard imple
 	
 	public SurfaceFinishesTranslationWizard(PMITranslationWizard pmitw) throws NXException, RemoteException
 	{
-		print("*** SurfaceFinishesTranslationWizard created ***");
+//		print("*** SurfaceFinishesTranslationWizard created ***");
 		//getMasterDimensions();
 		setPmiWizardDialog(pmitw.getPmiWizardDialog());
 		
@@ -49,7 +50,7 @@ public class SurfaceFinishesTranslationWizard extends PMITranslationWizard imple
 	{
 		try
 		{
-			print("\n---------------start of fillSurfaceFinishTree function---------------\n");
+//			print("\n---------------start of fillSurfaceFinishTree function---------------\n");
 			
 			AnnotationManager annotationManager = getMasterPart().annotations();
 			PmiManager pmiManager = getMasterPart().pmiManager();
@@ -107,26 +108,110 @@ public class SurfaceFinishesTranslationWizard extends PMITranslationWizard imple
 	
 	private void createSurfaceFinish() throws RemoteException, NXException
 	{
-		String dimensionName = getMasterSurfaceFinishesTree().getSelectedNodes()[0].displayText().split(":")[0];
-		//print("dimensionName = " + dimensionName);
-		switch (dimensionName)
-		{
-		case "PmiVerticalDimension":
-			//createVerticalDimension();			
-			break;
+		String surfaceFinishValue = getMasterSurfaceFinishesTree().getSelectedNodes()[0].displayText().split(":")[1];
+//		String sfn = getMasterSurfaceFinishesTree().getSelectedNodes()[0].displayText().split(" ")[2];
+		
+		SurfaceFinish nullAnnotations_SurfaceFinish = null;
+	    SurfaceFinishBuilder surfaceFinishBuilder1;
+	    surfaceFinishBuilder1 = getWorkPart().pmiManager().pmiAttributes().createSurfaceFinishBuilder(nullAnnotations_SurfaceFinish);
+	       
+	    surfaceFinishBuilder1.origin().setAnchor(nxopen.annotations.OriginBuilder.AlignmentPosition.MID_CENTER);
+	    
+//	    surfaceFinishBuilder1.setA1("Ra 1.60");
+//	    
+//	    surfaceFinishBuilder1.setA2("Ra 1.60");
+	    
+	    surfaceFinishBuilder1.setAngle(0.0);
+	    
+//	    surfaceFinishBuilder1.origin().plane().setPlaneMethod(nxopen.annotations.PlaneBuilder.PlaneMethodType.MODEL_VIEW);
+//	    Plane anP = (Plane)getPmiWizardDialog().getAnnotationPlane().getSelectedObjects()[0];
+//	    
+//	    Xform xf = surfaceFinishBuilder1.origin().plane().userDefinedPlane();
+//	    xf.setOrientation(anP.matrix());
+//	    
+//	    surfaceFinishBuilder1.origin().plane().setUserDefinedPlane(xf);
+	      
+	    surfaceFinishBuilder1.origin().plane().setPlaneMethod(PlaneMethodType.YZ_PLANE);
+	    
+	    LeaderData leaderData1;
+	    leaderData1 = getWorkPart().annotations().createLeaderData();
+	    
+	    leaderData1.setStubSize(5.0);
+	    
+	    leaderData1.setArrowhead(nxopen.annotations.LeaderData.ArrowheadType.FILLED_ARROW);
+	    
+	    surfaceFinishBuilder1.leader().leaders().append(leaderData1);
+	    
+	    leaderData1.setStubSide(nxopen.annotations.LeaderSide.INFERRED);
+	    
+//	    surfaceFinishBuilder1.setA2(" ");
+//	    
+//	    surfaceFinishBuilder1.setF2(" ");
+//	    
+//	    surfaceFinishBuilder1.setA2("Ra 1.60");
+//	    
+//	    surfaceFinishBuilder1.setF2("");
+	    
+//	    surfaceFinishBuilder1.setAngle(0.0);
+	    
+	    surfaceFinishBuilder1.setInvertSymbol(false);
+	    
+	    surfaceFinishBuilder1.origin().setInferRelativeToGeometry(true);
+	    
+	    Annotation.AssociativeOriginData assocOrigin1 = new Annotation.AssociativeOriginData();
+	    assocOrigin1.originType = AssociativeOriginType.DRAG;
+	    View nullView = null;
+	    assocOrigin1.view = nullView;
+	    assocOrigin1.viewOfGeometry = nullView;
+	    Point nullPoint = null;
+	    assocOrigin1.pointOnGeometry = nullPoint;
+	    assocOrigin1.vertAnnotation = null;
+	    assocOrigin1.vertAlignmentPosition = AlignmentPosition.TOP_LEFT;
+	    assocOrigin1.horizAnnotation = null;
+	    assocOrigin1.horizAlignmentPosition = AlignmentPosition.TOP_LEFT;
+	    assocOrigin1.alignedAnnotation = null;
+	    assocOrigin1.dimensionLine = 0;
+	    assocOrigin1.associatedView = nullView;
+	    assocOrigin1.associatedPoint = nullPoint;
+	    assocOrigin1.offsetAnnotation = null;
+	    assocOrigin1.offsetAlignmentPosition = AlignmentPosition.TOP_LEFT;
+	    assocOrigin1.xOffsetFactor = 0.0;
+	    assocOrigin1.yOffsetFactor = 0.0;
+	    assocOrigin1.stackAlignmentPosition = StackAlignmentPosition.ABOVE;
+	    surfaceFinishBuilder1.origin().setAssociativeOrigin(assocOrigin1);
+	    
+	    Point3d point1 = new Point3d(0.0, 0.0, 0.0);
+	    surfaceFinishBuilder1.origin().origin().setValue(null, nullView, point1);
+	    
+	    surfaceFinishBuilder1.origin().setInferRelativeToGeometry(true);
+	    
+	    surfaceFinishBuilder1.setInvertSymbol(false);
+	    
+	    Face face1 = (Face)getPmiWizardDialog().getSurfaceFinishFaceSelect().getSelectedObjects()[0];
+	    surfaceFinishBuilder1.associatedObjects().objects().add(face1);
+	    
+	    surfaceFinishBuilder1.setInvertSymbol(false);
+	    
+	    surfaceFinishBuilder1.setA1(surfaceFinishValue);
+	    
+	    surfaceFinishBuilder1.setA2(" ");
+	    
+	    surfaceFinishBuilder1.setF2(" ");
+	    
+	    surfaceFinishBuilder1.setA2(surfaceFinishValue);
+	    
+	    surfaceFinishBuilder1.setF2("");
+	    
+	    surfaceFinishBuilder1.setAngle(0.0);
+	    
+	    surfaceFinishBuilder1.setInvertSymbol(false);
+	    
+	    surfaceFinishBuilder1.setInvertSymbol(false);
+	    
+	    surfaceFinishBuilder1.commit();
+	    
+	    surfaceFinishBuilder1.destroy();
 			
-		case "PmiHorizontalDimension":
-			//createHorizontalDimension();			
-			break;
-			
-		case "PmiDiameterDimension":
-			//createDiameterDimension();			
-			break;	
-
-		default:
-			print("No switch branch for such surface finish");
-			break;
-		}		
 	}
 	
 	//------------------------------------------------------------------------------
@@ -148,13 +233,13 @@ public class SurfaceFinishesTranslationWizard extends PMITranslationWizard imple
 
 		if (getMasterSurfaceFinishesTree().getSelectedNodes().length == 0)
 		{
-			showMessage("Информация", NXMessageBox.DialogType.INFORMATION, "Выберите поверхность для трансляции");
+			showMessage("Информация", NXMessageBox.DialogType.INFORMATION, "Выберите, что переносить");
 			return;								
 		}
 		
-		print("\nStarting surface finish translation...");
+//		print("\nStarting surface finish translation...");
 		
-		//createSurfaceFinish();
+		createSurfaceFinish();
 		
 		// Clear selection
 		getPmiWizardDialog().getSurfaceFinishFaceSelect().setSelectedObjects(new TaggedObject[0]);		

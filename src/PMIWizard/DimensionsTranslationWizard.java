@@ -127,7 +127,7 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 	{
 		String dimensionName = getMasterDimensionsTree().getSelectedNodes()[0].displayText().split(":")[0];
 		//print("dimensionName = " + dimensionName);
-		print("AnnotationPlane = " + getAnnotationPlane().method().name());
+//		print("AnnotationPlane = " + getAnnotationPlane().method().name());
 		switch (dimensionName)
 		{
 		case "PmiVerticalDimension":
@@ -150,7 +150,7 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 		
 	private void createVerticalDimension() throws RemoteException, NXException
 	{
-		print("createVerticalDimension");
+//		print("createVerticalDimension");
 		try
 		{	
 			Dimension dim = getMasterDimensionsList().get(0);
@@ -395,7 +395,7 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 	
 	private void createHorizontalDimension() throws RemoteException, NXException
 	{
-		print("createHorizontalDimension");
+//		print("createHorizontalDimension");
 		try
 		{	
 			Dimension dim = getMasterDimensionsList().get(0);
@@ -593,7 +593,27 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 		    pmiData1.setBusinessModifiers(businessModifiers1);
 		    */
 		    Xform xform3;
-		    PmiDefaultPlane pmiDefaultPlane = PmiDefaultPlane.YZ_OF_WCS;
+		    PmiDefaultPlane pmiDefaultPlane;
+		    PlaneTypes.MethodType methodType = ((IPlane) getPmiWizardDialog().getAnnotationPlane().getSelectedObjects()[0]).method();
+		    switch (methodType.ordinal())
+			{
+			case PlaneTypes.MethodType._FIXED_X:
+				pmiDefaultPlane = PmiDefaultPlane.YZ_OF_WCS;
+				break;
+				
+			case PlaneTypes.MethodType._FIXED_Y:
+				pmiDefaultPlane = PmiDefaultPlane.XZ_OF_WCS;
+				break;
+				
+			case PlaneTypes.MethodType._FIXED_Z:
+				pmiDefaultPlane = PmiDefaultPlane.XY_OF_WCS;
+				break;	
+
+			default:
+				pmiDefaultPlane = PmiDefaultPlane.YZ_OF_WCS;
+				break;
+			}
+		    
 		    xform3 = dimensionData1.getInferredPlane(pmiDefaultPlane, nxopen.annotations.DimensionType.HORIZONTAL);
 		    
 		    Point3d origin1 = new Point3d(0.0, 0.0, 0.0);
@@ -640,7 +660,7 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 	
 	private void createDiameterDimension() throws RemoteException, NXException
 	{
-		print("createDiameterDimension");
+//		print("createDiameterDimension");
 		try
 		{	
 			Dimension dim = getMasterDimensionsList().get(0);
@@ -891,7 +911,7 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 			return;								
 		}
 		
-		print("\nStarting dimension translation...");
+//		print("\nStarting dimension translation...");
 		
 		createDimension();
 		
@@ -937,16 +957,16 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 
 	public Plane getAnnotationPlane()
 	{
-		Plane ap;
-		try
-		{
-			ap = (Plane)getPmiWizardDialog().getAnnotationPlane().getSelectedObjects()[0];
-			print("ap == null " + (ap == null));
-		} catch (RemoteException | NXException e)
-		{
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+//		Plane ap;
+//		try
+//		{
+//			ap = (Plane)getPmiWizardDialog().getAnnotationPlane().getSelectedObjects()[0];
+//			print("ap == null " + (ap == null));
+//		} catch (RemoteException | NXException e)
+//		{
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
 		
 		return annotationPlane;
 	}
