@@ -101,6 +101,9 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
     private nxopen.blockstyler.Button translateSurfaceFinishButton;// Block type: Button
     private nxopen.blockstyler.Group wizardStepSelectAnnotationPlane;// Block type: Group
     private nxopen.blockstyler.SpecifyPlane annotationPlane;// Block type: Specify Plane
+    private nxopen.blockstyler.SpecifyPoint surfaceFinishLocation;// Block type: Specify Point
+    private nxopen.blockstyler.Button dimensionsClearButton;// Block type: Button
+    private nxopen.blockstyler.Button surfaceFinishClearButton;// Block type: Button
     
     //------------------------------------------------------------------------------
     //Bit Option for Property: EntityType
@@ -330,6 +333,11 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
             
             wizardStepSelectAnnotationPlane = (nxopen.blockstyler.Group)theDialog.topBlock().findBlock("wizardStepSelectAnnotationPlane");
             annotationPlane = (nxopen.blockstyler.SpecifyPlane)theDialog.topBlock().findBlock("annotationPlane");
+            
+            surfaceFinishLocation = (nxopen.blockstyler.SpecifyPoint)theDialog.topBlock().findBlock("surfaceFinishLocation");
+            dimensionsClearButton = (nxopen.blockstyler.Button)theDialog.topBlock().findBlock("dimensionsClearButton");
+            surfaceFinishClearButton = (nxopen.blockstyler.Button)theDialog.topBlock().findBlock("surfaceFinishClearButton");
+            
             //------------------------------------------------------------------------------
             //Registration of Treelist specific callbacks
             //------------------------------------------------------------------------------
@@ -496,6 +504,18 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
             else if(block == annotationPlane)
             {
             //---------Enter your code here-----------
+            }
+            else if(block == surfaceFinishLocation)
+            {
+            //---------Enter your code here-----------
+            }
+            else if(block == dimensionsClearButton)
+            {
+            	getDimensionEdgeSelect().setSelectedObjects(new TaggedObject[0]);	
+            }
+            else if(block == surfaceFinishClearButton)
+            {
+            	getSurfaceFinishFaceSelect().setSelectedObjects(new TaggedObject[0]);
             }
         }
              
@@ -868,6 +888,15 @@ public class PMIWizardDialog implements BlockDialog.Initialize, BlockDialog.Dial
 	public void setAnnotationPlane(nxopen.blockstyler.SpecifyPlane annotationPlane)
 	{
 		this.annotationPlane = annotationPlane;
+	}
+	public nxopen.blockstyler.SpecifyPoint getSurfaceFinishLocation()
+	{
+		return surfaceFinishLocation;
+	}
+	public void setSurfaceFinishLocation(
+			nxopen.blockstyler.SpecifyPoint surfaceFinishLocation)
+	{
+		this.surfaceFinishLocation = surfaceFinishLocation;
 	}
     
 }

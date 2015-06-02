@@ -5,7 +5,6 @@ import java.util.ArrayList;
 
 import nxopen.*;
 import nxopen.annotations.*;
-import nxopen.annotations.PlaneBuilder.PlaneMethodType;
 import nxopen.blockstyler.*;
 
 public class SurfaceFinishesTranslationWizard extends PMITranslationWizard implements Tree.OnSelectCallback
@@ -44,6 +43,32 @@ public class SurfaceFinishesTranslationWizard extends PMITranslationWizard imple
 	{
 		AnnotationManager masterAnnotationManager = super.getMasterPart().annotations();
 		// TODO find previous work to get dimensions information form master part
+	}
+	
+	private PlaneBuilder.PlaneMethodType getPlaneMethodType() throws RemoteException, NXException
+	{
+		PlaneBuilder.PlaneMethodType planeMethodType;
+		PlaneTypes.MethodType methodType = ((IPlane) getPmiWizardDialog().getAnnotationPlane().getSelectedObjects()[0]).method();
+		switch (methodType.ordinal())
+		{
+		case PlaneTypes.MethodType._FIXED_X:
+			planeMethodType = PlaneBuilder.PlaneMethodType.YZ_PLANE;
+			break;
+			
+		case PlaneTypes.MethodType._FIXED_Y:
+			planeMethodType = PlaneBuilder.PlaneMethodType.XZ_PLANE;
+			break;
+			
+		case PlaneTypes.MethodType._FIXED_Z:
+			planeMethodType = PlaneBuilder.PlaneMethodType.XY_PLANE;
+			break;	
+
+		default:
+			planeMethodType = PlaneBuilder.PlaneMethodType.YZ_PLANE;
+			break;
+		}
+		
+		return planeMethodType;
 	}
 		
 	private void fillTree() throws RemoteException, NXException
@@ -130,8 +155,8 @@ public class SurfaceFinishesTranslationWizard extends PMITranslationWizard imple
 //	    xf.setOrientation(anP.matrix());
 //	    
 //	    surfaceFinishBuilder1.origin().plane().setUserDefinedPlane(xf);
-	      
-	    surfaceFinishBuilder1.origin().plane().setPlaneMethod(PlaneMethodType.YZ_PLANE);
+	    
+	    surfaceFinishBuilder1.origin().plane().setPlaneMethod(getPlaneMethodType());
 	    
 	    LeaderData leaderData1;
 	    leaderData1 = getWorkPart().annotations().createLeaderData();
@@ -158,6 +183,8 @@ public class SurfaceFinishesTranslationWizard extends PMITranslationWizard imple
 	    
 	    surfaceFinishBuilder1.origin().setInferRelativeToGeometry(true);
 	    
+//	    Point point1 = getWorkPart().points().createPoint(getPmiWizardDialog().getSurfaceFinishLocation().point());
+	    
 	    Annotation.AssociativeOriginData assocOrigin1 = new Annotation.AssociativeOriginData();
 	    assocOrigin1.originType = AssociativeOriginType.DRAG;
 	    View nullView = null;
@@ -180,15 +207,21 @@ public class SurfaceFinishesTranslationWizard extends PMITranslationWizard imple
 	    assocOrigin1.stackAlignmentPosition = StackAlignmentPosition.ABOVE;
 	    surfaceFinishBuilder1.origin().setAssociativeOrigin(assocOrigin1);
 	    
-	    Point3d point1 = new Point3d(0.0, 0.0, 0.0);
-	    surfaceFinishBuilder1.origin().origin().setValue(null, nullView, point1);
+	    // TODO 
+	    // set right location point
+	    
+	    Point3d point2 = getPmiWizardDialog().getSurfaceFinishLocation().point();
+	    surfaceFinishBuilder1.origin().origin().setValue(null, nullView, point2);
 	    
 	    surfaceFinishBuilder1.origin().setInferRelativeToGeometry(true);
 	    
 	    surfaceFinishBuilder1.setInvertSymbol(false);
 	    
-	    Face face1 = (Face)getPmiWizardDialog().getSurfaceFinishFaceSelect().getSelectedObjects()[0];
-	    surfaceFinishBuilder1.associatedObjects().objects().add(face1);
+	    TaggedObject[] taggedSurface = getPmiWizardDialog().getSurfaceFinishFaceSelect().getSelectedObjects();
+	    for(TaggedObject f : taggedSurface)
+	    {
+		    surfaceFinishBuilder1.associatedObjects().objects().add((Face)f);		    
+	    }
 	    
 	    surfaceFinishBuilder1.setInvertSymbol(false);
 	    
@@ -227,7 +260,7 @@ public class SurfaceFinishesTranslationWizard extends PMITranslationWizard imple
 	{
 		if (getPmiWizardDialog().getSurfaceFinishFaceSelect().getSelectedObjects().length == 0)
 		{
-			showMessage("Информация", NXMessageBox.DialogType.INFORMATION, "Укажите поверхность");
+			showMessage("Информация", NXMessageBox.DialogType.INFORMATION, "Выберите поверхность");
 			return;
 		}
 
@@ -237,12 +270,19 @@ public class SurfaceFinishesTranslationWizard extends PMITranslationWizard imple
 			return;								
 		}
 		
+		if (getPmiWizardDialog().getSurfaceFinishLocation().point() == null)
+		{
+			showMessage("Информация", NXMessageBox.DialogType.INFORMATION, "Выберите точку расположения");
+			return;								
+		}
+		
 //		print("\nStarting surface finish translation...");
 		
 		createSurfaceFinish();
 		
 		// Clear selection
-		getPmiWizardDialog().getSurfaceFinishFaceSelect().setSelectedObjects(new TaggedObject[0]);		
+		getPmiWizardDialog().getSurfaceFinishFaceSelect().setSelectedObjects(new TaggedObject[0]);
+		getPmiWizardDialog().getSurfaceFinishLocation().setPoint(null);
 	}
 	
 	//------------------------------------------------------------------------------

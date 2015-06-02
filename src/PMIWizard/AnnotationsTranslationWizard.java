@@ -19,7 +19,7 @@ public class AnnotationsTranslationWizard extends PMITranslationWizard
 	
 	public AnnotationsTranslationWizard(PMITranslationWizard pmitw) throws NXException, RemoteException
 	{
-		print("*** AnnotationsTranslationWizard created ***");
+//		print("*** AnnotationsTranslationWizard created ***");
 		//getMasterDimensions();
 		setPmiWizardDialog(pmitw.getPmiWizardDialog());
 		
@@ -45,7 +45,7 @@ public class AnnotationsTranslationWizard extends PMITranslationWizard
 	{
 		try
 		{
-			print("\n---------------start of fillAnnotationTree function---------------\n");
+//			print("\n---------------start of fillAnnotationTree function---------------\n");
 			
 			AnnotationManager annotationManager = getMasterPart().annotations();
 			PmiManager pmiManager = getMasterPart().pmiManager();

@@ -6,7 +6,7 @@ import java.rmi.RemoteException;
 
 import nxopen.*;
 import nxopen.annotations.*;
-import nxopen.preferences.AnnotationPreferences;
+import nxopen.preferences.*;
 
 public class PMITranslationWizard
 {
@@ -45,10 +45,8 @@ public class PMITranslationWizard
 		setWorkPart(getTheSession().parts().work());
 		
 		//TODO to be written	
-		setAnnotationsPreferences();
-		
-	}
-	
+		setAnnotationsPreferences();		
+	}	
 	
 	//------------------------------------------------------------------------------
     // Private methods
@@ -278,6 +276,32 @@ public class PMITranslationWizard
 	protected String className(String str)
 	{
 		return str.split("_")[0];
+	}
+	
+	protected PmiDefaultPlane getPmiDefaultPlane() throws RemoteException, NXException
+	{
+		PmiDefaultPlane pmiDefaultPlane;
+		PlaneTypes.MethodType methodType = ((IPlane) getPmiWizardDialog().getAnnotationPlane().getSelectedObjects()[0]).method();
+	    switch (methodType.ordinal())
+		{
+		case PlaneTypes.MethodType._FIXED_X:
+			pmiDefaultPlane = PmiDefaultPlane.YZ_OF_WCS;
+			break;
+			
+		case PlaneTypes.MethodType._FIXED_Y:
+			pmiDefaultPlane = PmiDefaultPlane.XZ_OF_WCS;
+			break;
+			
+		case PlaneTypes.MethodType._FIXED_Z:
+			pmiDefaultPlane = PmiDefaultPlane.XY_OF_WCS;
+			break;	
+
+		default:
+			pmiDefaultPlane = PmiDefaultPlane.YZ_OF_WCS;
+			break;
+		}
+	    
+	    return pmiDefaultPlane;
 	}
 	
 	//------------------------------------------------------------------------------

@@ -141,6 +141,10 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 		case "PmiDiameterDimension":
 			createDiameterDimension();			
 			break;	
+			
+		case "PmiRadiusDimension":
+			createRadiusDimension();			
+			break;		
 
 		default:
 			print("No switch branch for such dimension");
@@ -592,29 +596,8 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 		    /*nxopen.annotations.BusinessModifier [] businessModifiers1  = new nxopen.annotations.BusinessModifier[0];
 		    pmiData1.setBusinessModifiers(businessModifiers1);
 		    */
-		    Xform xform3;
-		    PmiDefaultPlane pmiDefaultPlane;
-		    PlaneTypes.MethodType methodType = ((IPlane) getPmiWizardDialog().getAnnotationPlane().getSelectedObjects()[0]).method();
-		    switch (methodType.ordinal())
-			{
-			case PlaneTypes.MethodType._FIXED_X:
-				pmiDefaultPlane = PmiDefaultPlane.YZ_OF_WCS;
-				break;
-				
-			case PlaneTypes.MethodType._FIXED_Y:
-				pmiDefaultPlane = PmiDefaultPlane.XZ_OF_WCS;
-				break;
-				
-			case PlaneTypes.MethodType._FIXED_Z:
-				pmiDefaultPlane = PmiDefaultPlane.XY_OF_WCS;
-				break;	
-
-			default:
-				pmiDefaultPlane = PmiDefaultPlane.YZ_OF_WCS;
-				break;
-			}
-		    
-		    xform3 = dimensionData1.getInferredPlane(pmiDefaultPlane, nxopen.annotations.DimensionType.HORIZONTAL);
+		    PmiDefaultPlane pmiDefaultPlane = getPmiDefaultPlane();		    
+		    Xform xform3 = dimensionData1.getInferredPlane(pmiDefaultPlane, nxopen.annotations.DimensionType.HORIZONTAL);
 		    
 		    Point3d origin1 = new Point3d(0.0, 0.0, 0.0);
 		    nxopen.annotations.PmiHorizontalDimension pmiHorizontalDimension;
@@ -886,6 +869,11 @@ public class DimensionsTranslationWizard extends PMITranslationWizard implements
 		{
 			catchException(ex);
 		}
+	}
+	
+	private void createRadiusDimension() throws RemoteException, NXException
+	{
+		// TODO
 	}
 	
 	//------------------------------------------------------------------------------
